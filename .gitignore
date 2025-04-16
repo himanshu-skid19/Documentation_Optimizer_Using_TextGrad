@@ -1,0 +1,8 @@
+models/
+api_docs_dataset
+api-docs-model
+github_api
+kaggle_api
+openapi_specs
+petstore_api.json
+twitter_api.json
