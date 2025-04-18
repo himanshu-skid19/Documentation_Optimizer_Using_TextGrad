@@ -2,7 +2,7 @@ import os
 import argparse
 import logging
 import numpy as np
-from datasets import load_from_disk
+from datasets import load_from_disk, load_dataset
 from transformers import (
     AutoModelForSeq2SeqLM,
     AutoTokenizer,
@@ -17,6 +17,8 @@ from nltk.tokenize import word_tokenize
 import torch
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training, TaskType
 from tqdm import tqdm
+import wandb  # Add wandb import
+
 
 # Set up logging
 logging.basicConfig(
@@ -30,6 +32,9 @@ try:
     nltk.data.find("tokenizers/punkt")
 except (LookupError, OSError):
     nltk.download("punkt", quiet=True)
+
+# At the module level (outside of any function)
+tokenizer = None
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Fine-tune a model for API documentation generation")
@@ -54,7 +59,7 @@ def parse_args():
     parser.add_argument(
         "--max_source_length",
         type=int,
-        default=256,  # Reduce from 512 to 256
+        default=512,  # Reduce from 512 to 256
         help="Maximum length of the source text (instruction)",
     )
     parser.add_argument(
@@ -66,7 +71,7 @@ def parse_args():
     parser.add_argument(
         "--learning_rate",
         type=float,
-        default=2e-4,
+        default=1e-3,
         help="Initial learning rate (after warmup period)",
     )
     parser.add_argument(
@@ -78,13 +83,13 @@ def parse_args():
     parser.add_argument(
         "--num_epochs",
         type=int,
-        default=3,
+        default=100,
         help="Number of training epochs",
     )
     parser.add_argument(
         "--lora_r",
         type=int,
-        default=16,
+        default=32,
         help="LoRA attention dimension",
     )
     parser.add_argument(
@@ -96,7 +101,7 @@ def parse_args():
     parser.add_argument(
         "--lora_dropout",
         type=float,
-        default=0.05,
+        default=0.1,
         help="LoRA dropout probability",
     )
     parser.add_argument(
@@ -106,7 +111,103 @@ def parse_args():
         default="4bit",
         help="Quantization type",
     )
+    parser.add_argument(
+        "--codocbench_train",
+        type=str,
+        default="codocbench/dataset/train.jsonl",
+        help="Path to the CoDocBench training dataset file",
+    )
+    parser.add_argument(
+        "--codocbench_test",
+        type=str,
+        default="codocbench/dataset/test.jsonl",
+        help="Path to the CoDocBench test dataset file",
+    )
+    # Add WandB related arguments
+    parser.add_argument(
+        "--wandb_project",
+        type=str,
+        default="doc-optimizer",
+        help="WandB project name",
+    )
+    parser.add_argument(
+        "--wandb_entity",
+        type=str,
+        default=None,
+        help="WandB entity (username or team name)",
+    )
+    parser.add_argument(
+        "--wandb_run_name",
+        type=str,
+        default=None,
+        help="WandB run name",
+    )
+    parser.add_argument(
+        "--use_wandb",
+        action="store_true",
+        help="Whether to log to Weights & Biases",
+    )
     return parser.parse_args()
+
+def load_codocbench_dataset(train_path, test_path):
+    """Load the CoDocBench dataset from JSONL files."""
+    
+    # Load the datasets
+    train_dataset = load_dataset('json', data_files=train_path, split='train')
+    test_dataset = load_dataset('json', data_files=test_path, split='train')
+    
+    # Combine into a single dataset dict
+    dataset = {
+        'train': train_dataset,
+        'validation': test_dataset
+    }
+    
+    return dataset
+
+def preprocess_codocbench(examples):
+    """Transform CoDocBench data into instruction/response pairs."""
+    instructions = []
+    responses = []
+    
+    for i in range(len(examples['file'])):
+        # Get the two versions
+        version_data = examples['version_data'][i]
+        if len(version_data) < 2:
+            continue
+            
+        v1 = version_data[0]
+        v2 = version_data[1]
+        
+        # Create instruction based on code changes
+        instruction = f"""Improve the following Python documentation to align with the updated code:
+
+    Original code:
+    ```python
+    {v1['code']}```
+    Updated code:
+    ```python
+    {v2['code']}
+    ```
+    Original documentation:
+    ```python
+    {v1['docstring']}
+    ```
+    Please provide an improved version of the documentation that reflects the code changes."""
+            # Use the updated docstring as the response
+    response = v2['docstring']
+    
+    instructions.append(instruction)
+    responses.append(response)
+
+    return {
+        "instruction": instructions,
+        "response": responses
+    }
+
+
+    
+
+
 
 def preprocess_function(examples, tokenizer, max_source_length, max_target_length):
     """Preprocess the data by tokenizing."""
@@ -149,39 +250,44 @@ def preprocess_function(examples, tokenizer, max_source_length, max_target_lengt
     
     return model_inputs
 
-global tokenizer
-
 def compute_metrics(eval_preds):
     """Compute evaluation metrics."""
+    global tokenizer  # Reference the global tokenizer
     rouge_score = load("rouge")
     bleu = load("bleu")
     
     preds, labels = eval_preds
     
-    # Replace -100 with pad token id
+    # Process predictions and labels (keep this part as is)
     if isinstance(preds, tuple):
         preds = preds[0]
     
+    max_id = tokenizer.vocab_size - 1
+    pad_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else 0
+    
+    if not isinstance(preds, np.ndarray):
+        preds = np.array(preds)
+        
+    preds = np.clip(preds, 0, max_id)
+    preds = preds.astype(np.int32)
+    
     decoded_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
-    # Replace -100 with pad token id
-    labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
+    
+    if not isinstance(labels, np.ndarray):
+        labels = np.array(labels)
+    labels = np.where(labels != -100, labels, pad_id)
+    labels = np.clip(labels, 0, max_id).astype(np.int32)
     decoded_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
     
-    # ROUGE expects a newline after each sentence
-    decoded_preds = ["\n".join(word_tokenize(pred)) for pred in decoded_preds]
-    decoded_labels = ["\n".join(word_tokenize(label)) for label in decoded_labels]
-    
-    # Compute ROUGE scores
+    # ROUGE calculation (keep this part as is)
     rouge_results = rouge_score.compute(
         predictions=decoded_preds, 
         references=decoded_labels, 
         use_stemmer=True
     )
     
-    # Compute BLEU scores
-    tokenized_preds = [word_tokenize(pred) for pred in decoded_preds]
-    tokenized_labels = [[word_tokenize(label)] for label in decoded_labels]
-    bleu_results = bleu.compute(predictions=tokenized_preds, references=tokenized_labels)
+    # FIX: BLEU calculation - use strings directly, not tokenized words
+    bleu_results = bleu.compute(predictions=decoded_preds, references=decoded_labels)
     
     # Extract the scores we want to track
     result = {
@@ -193,13 +299,50 @@ def compute_metrics(eval_preds):
     
     return result
 
+
+class DebugTrainer(Seq2SeqTrainer):
+    def compute_loss(self, model, inputs, return_outputs=False):
+        labels = inputs.get("labels")
+        if labels is not None:
+            print("Batch Labels (non -100):", (labels != -100).sum().item())
+        outputs = model(**inputs)
+        loss = outputs.loss
+        print("Computed loss:", loss.item())
+        return (loss, outputs) if return_outputs else loss
+
 def main():
     args = parse_args()
     
-    # Load dataset
-    logger.info(f"Loading dataset from {args.dataset_path}")
-    dataset = load_from_disk(args.dataset_path)
+    # Initialize WandB
+    if args.use_wandb:
+        logger.info(f"Initializing Weights & Biases with project: {args.wandb_project}")
+        wandb_run_name = args.wandb_run_name or f"{args.model_name_or_path.split('/')[-1]}-{args.quantization}"
+        
+        wandb.init(
+            project=args.wandb_project,
+            entity=args.wandb_entity,
+            name=wandb_run_name,
+            config={
+                "model": args.model_name_or_path,
+                "max_source_length": args.max_source_length,
+                "max_target_length": args.max_target_length,
+                "learning_rate": args.learning_rate,
+                "batch_size": args.batch_size,
+                "epochs": args.num_epochs,
+                "quantization": args.quantization,
+                "lora_r": args.lora_r,
+                "lora_alpha": args.lora_alpha,
+                "lora_dropout": args.lora_dropout,
+            }
+        )
     
+    logger.info(f"Loading CoDocBench dataset from {args.codocbench_train} and {args.codocbench_test}")
+    dataset = load_codocbench_dataset(args.codocbench_train, args.codocbench_test)
+
+    processed_train = dataset['train'].map( preprocess_codocbench, batched=True, remove_columns=dataset['train'].column_names, )
+    processed_val = dataset['validation'].map( preprocess_codocbench, batched=True, remove_columns=dataset['validation'].column_names, )
+
+    global tokenizer
     # Load tokenizer
     logger.info(f"Loading tokenizer: {args.model_name_or_path}")
     tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path)
@@ -275,30 +418,30 @@ def main():
     # Get PEFT model
     model = get_peft_model(model, lora_config)
 
-    # Add this line to mark trainable parameters
-    for param in model.parameters():
-        if param.requires_grad:
-            # Add a small update to activate gradients properly
-            param.data = param.data.to(torch.float32)
+    # # Add this line to mark trainable parameters
+    # for param in model.parameters():
+    #     if param.requires_grad:
+    #         # Add a small update to activate gradients properly
+    #         param.data = param.data.to(torch.float32)
             
     model.print_trainable_parameters()
     # Preprocess datasets
     logger.info("Preprocessing datasets")
         
-    tokenized_train = dataset["train"].map(
+    tokenized_train = processed_train.map(
         lambda examples: preprocess_function(
             examples, tokenizer, args.max_source_length, args.max_target_length
         ),
         batched=True,
-        remove_columns=dataset["train"].column_names,
+        remove_columns=processed_train.column_names,
     )
     
-    tokenized_val = dataset["validation"].map(
+    tokenized_val = processed_val.map(
         lambda examples: preprocess_function(
             examples, tokenizer, args.max_source_length, args.max_target_length
         ),
         batched=True,
-        remove_columns=dataset["validation"].column_names,
+        remove_columns=processed_val.column_names,
     )
     
     # Data collator
@@ -307,9 +450,15 @@ def main():
         model=model,
         label_pad_token_id=-100,
     )
-    
+
+    num_tokens = sum([sum(1 for t in ex['labels'] if t != -100) for ex in tokenized_train])
+    print(f"Total non-ignored tokens in training set: {num_tokens}")
+
+        
     # Define training arguments - reduced batch size and gradient accumulation steps
     # to fit within memory constraints
+    report_to = ["wandb", "tensorboard"] if args.use_wandb else ["tensorboard"]
+    
     training_args = Seq2SeqTrainingArguments(
         output_dir=args.output_dir,
         evaluation_strategy="epoch",
@@ -325,11 +474,11 @@ def main():
         num_train_epochs=args.num_epochs,
         predict_with_generate=True,
         generation_max_length=args.max_target_length,
-        report_to="tensorboard",
+        report_to=report_to,  # Updated to include wandb when enabled
         load_best_model_at_end=True,
         metric_for_best_model="rougeL",
         gradient_checkpointing=False,  # Try disabling this first
-        fp16=True,  # Use mixed precision
+        fp16=False,  # Use mixed precision
         ddp_find_unused_parameters=False,  # Add this parameter
     )
     
@@ -343,7 +492,21 @@ def main():
         data_collator=data_collator,
         compute_metrics=compute_metrics,
     )
+
+    # trainer = DebugTrainer(
+    #     model=model,
+    #     args=training_args,
+    #     train_dataset=tokenized_train,
+    #     eval_dataset=tokenized_val,
+    #     tokenizer=tokenizer,
+    #     data_collator=data_collator,
+    #     compute_metrics=compute_metrics,
+    # )
     
+    for name, param in model.named_parameters():
+        if param.requires_grad:
+            print(f"{name}: {param.shape} | mean={param.data.mean():.4f}")
+
     # Train the model
     logger.info("Starting training...")
     trainer.train()
@@ -352,6 +515,10 @@ def main():
     logger.info(f"Saving model and tokenizer to {args.output_dir}")
     trainer.save_model(args.output_dir)
     tokenizer.save_pretrained(args.output_dir)
+    
+    # Finish WandB run
+    if args.use_wandb:
+        wandb.finish()
     
     logger.info("Training completed!")
 

@@ -1,0 +1,168 @@
+2025-04-18 16:42:23,078 - INFO - Loading CoDocBench dataset from codocbench/dataset/train.jsonl and codocbench/dataset/test.jsonl
+2025-04-18 16:42:24,293 - INFO - Loading tokenizer: google/flan-t5-base
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+2025-04-18 16:42:24,713 - INFO - Not using quantization
+2025-04-18 16:42:24,713 - INFO - Loading model: google/flan-t5-base
+2025-04-18 16:42:26,077 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-04-18 16:42:26,764 - INFO - Setting up LoRA for efficient fine-tuning
+trainable params: 3,538,944 || all params: 251,116,800 || trainable%: 1.4092820552029972
+2025-04-18 16:42:27,163 - INFO - Preprocessing datasets
+Total non-ignored tokens in training set: 236
+base_model.model.encoder.block.0.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.0.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.0.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.encoder.block.0.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.1.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.encoder.block.1.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.1.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.1.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.2.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.encoder.block.2.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.2.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.encoder.block.2.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.3.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.encoder.block.3.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.3.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.encoder.block.3.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.4.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.encoder.block.4.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.4.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.encoder.block.4.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.5.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.5.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.5.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.encoder.block.5.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.6.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.encoder.block.6.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.6.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.6.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.7.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0003
+base_model.model.encoder.block.7.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.7.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.encoder.block.7.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.8.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.8.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.8.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.encoder.block.8.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.9.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.encoder.block.9.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.9.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.encoder.block.9.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.10.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.encoder.block.10.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.10.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.encoder.block.10.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.11.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.encoder.block.11.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.11.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.encoder.block.11.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.0.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.0.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.0.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.0.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.0.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.0.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.0.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.0.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.1.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.1.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.1.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.1.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.1.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.1.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.1.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.decoder.block.1.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.2.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.2.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.2.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.2.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.2.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.2.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.2.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.decoder.block.2.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.3.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.3.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.3.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.3.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.3.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.3.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.3.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.3.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.4.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.4.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.4.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.decoder.block.4.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.4.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.4.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.4.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.decoder.block.4.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.5.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.5.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.5.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.5.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.5.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.5.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.5.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.5.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.6.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.6.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.6.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0003
+base_model.model.decoder.block.6.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.6.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.decoder.block.6.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.6.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.6.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.7.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.7.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.7.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.7.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.7.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0003
+base_model.model.decoder.block.7.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.7.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.7.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.8.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.decoder.block.8.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.8.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.8.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.8.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.decoder.block.8.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.8.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.8.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.9.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.9.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.9.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.9.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.9.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.9.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.9.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.decoder.block.9.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.10.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.10.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.10.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.10.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.10.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.10.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.10.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.10.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.11.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.11.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.11.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.11.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.11.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.decoder.block.11.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.11.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0003
+base_model.model.decoder.block.11.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+2025-04-18 16:42:27,267 - INFO - Starting training...
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/optimization.py:411: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+  0%|                                                                                                | 0/3 [00:00<?, ?it/s]You're using a T5TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+ 33%|█████████████████████████████▎                                                          | 1/3 [00:00<00:01,  1.00it/s]2025-04-18 16:42:41,010 - INFO - Using default tokenizer.
+ 67%|██████████████████████████████████████████████████████████▋                             | 2/3 [00:14<00:08,  8.30s/it]2025-04-18 16:42:53,817 - INFO - Using default tokenizer.
+100%|████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:26<00:00, 10.23s/it]2025-04-18 16:43:07,058 - INFO - Using default tokenizer.
+{'eval_loss': 2.9210236072540283, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 12.6947, 'eval_samples_per_second': 0.236, 'eval_steps_per_second': 0.236, 'epoch': 1.0}
+100%|████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:39<00:00, 13.30s/it]
+{'eval_loss': 2.9210236072540283, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 12.0863, 'eval_samples_per_second': 0.248, 'eval_steps_per_second': 0.248, 'epoch': 2.0}
+2025-04-18 16:43:07,315 - INFO - Saving model and tokenizer to ./api-docs-model                                            
+{'eval_loss': 2.920866012573242, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 12.796, 'eval_samples_per_second': 0.234, 'eval_steps_per_second': 0.234, 'epoch': 2.67}
+{'train_runtime': 39.8979, 'train_samples_per_second': 0.226, 'train_steps_per_second': 0.075, 'train_loss': 0.9021538893381754, 'epoch': 2.67}

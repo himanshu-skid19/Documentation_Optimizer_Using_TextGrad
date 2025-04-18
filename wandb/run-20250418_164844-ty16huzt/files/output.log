@@ -1,0 +1,326 @@
+2025-04-18 16:48:45,170 - INFO - Loading CoDocBench dataset from codocbench/dataset/train.jsonl and codocbench/dataset/test.jsonl
+2025-04-18 16:48:46,453 - INFO - Loading tokenizer: google/flan-t5-base
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+2025-04-18 16:48:46,849 - INFO - Not using quantization
+2025-04-18 16:48:46,849 - INFO - Loading model: google/flan-t5-base
+2025-04-18 16:48:47,827 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-04-18 16:48:48,542 - INFO - Setting up LoRA for efficient fine-tuning
+trainable params: 3,538,944 || all params: 251,116,800 || trainable%: 1.4092820552029972
+2025-04-18 16:48:49,015 - INFO - Preprocessing datasets
+Map: 100%|███████████████████████████████████████████████████████████████████████████| 3/3 [00:00<00:00, 330.87 examples/s]
+Map: 100%|███████████████████████████████████████████████████████████████████████████| 3/3 [00:00<00:00, 396.74 examples/s]
+Total non-ignored tokens in training set: 236
+base_model.model.encoder.block.0.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.encoder.block.0.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.0.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.encoder.block.0.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.1.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.1.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.1.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.encoder.block.1.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.2.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.2.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.2.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.2.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.3.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.encoder.block.3.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.3.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.encoder.block.3.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.4.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.encoder.block.4.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.4.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.encoder.block.4.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.5.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.5.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.5.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0003
+base_model.model.encoder.block.5.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.6.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.encoder.block.6.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.6.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.encoder.block.6.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.7.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.encoder.block.7.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.7.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0003
+base_model.model.encoder.block.7.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.8.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.8.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.8.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.encoder.block.8.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.9.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.9.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.9.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.9.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.10.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.10.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.10.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.10.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.11.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.encoder.block.11.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.encoder.block.11.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.encoder.block.11.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.0.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0003
+base_model.model.decoder.block.0.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.0.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.0.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.0.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.decoder.block.0.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.0.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.0.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.1.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0003
+base_model.model.decoder.block.1.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.1.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.1.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.1.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.1.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.1.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.1.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.2.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.2.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.2.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.2.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.2.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.2.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.2.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.decoder.block.2.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.3.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.3.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.3.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.3.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.3.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.3.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.3.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.3.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.4.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.decoder.block.4.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.4.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.4.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.4.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.decoder.block.4.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.4.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.4.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.5.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.5.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.5.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0004
+base_model.model.decoder.block.5.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.5.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.decoder.block.5.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.5.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.5.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.6.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.6.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.6.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.6.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.6.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.6.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.6.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.6.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.7.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0003
+base_model.model.decoder.block.7.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.7.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.decoder.block.7.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.7.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.7.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.7.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.7.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.8.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.8.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.8.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.8.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.8.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.8.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.8.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.8.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.9.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0001
+base_model.model.decoder.block.9.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.9.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.9.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.9.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.9.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.9.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.9.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.10.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.10.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.10.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0002
+base_model.model.decoder.block.10.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.10.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.10.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.10.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0004
+base_model.model.decoder.block.10.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.11.layer.0.SelfAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0001
+base_model.model.decoder.block.11.layer.0.SelfAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.11.layer.0.SelfAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0000
+base_model.model.decoder.block.11.layer.0.SelfAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.11.layer.1.EncDecAttention.q.lora_A.default.weight: torch.Size([32, 768]) | mean=-0.0002
+base_model.model.decoder.block.11.layer.1.EncDecAttention.q.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+base_model.model.decoder.block.11.layer.1.EncDecAttention.v.lora_A.default.weight: torch.Size([32, 768]) | mean=0.0000
+base_model.model.decoder.block.11.layer.1.EncDecAttention.v.lora_B.default.weight: torch.Size([768, 32]) | mean=0.0000
+2025-04-18 16:48:49,128 - INFO - Starting training...
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/optimization.py:411: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+  0%|                                                                                              | 0/100 [00:00<?, ?it/s]You're using a T5TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+  1%|▊                                                                                     | 1/100 [00:01<01:44,  1.05s/it]2025-04-18 16:49:05,483 - INFO - Using default tokenizer.
+  2%|█▋                                                                                    | 2/100 [00:16<15:58,  9.79s/it]2025-04-18 16:49:19,463 - INFO - Using default tokenizer.
+  4%|███▍                                                                                  | 4/100 [00:30<11:21,  7.10s/it]2025-04-18 16:49:33,126 - INFO - Using default tokenizer.
+{'eval_loss': 2.9210236072540283, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 15.2666, 'eval_samples_per_second': 0.197, 'eval_steps_per_second': 0.197, 'epoch': 1.0}
+  5%|████▎                                                                                 | 5/100 [00:44<15:01,  9.49s/it]2025-04-18 16:49:47,013 - INFO - Using default tokenizer.
+{'eval_loss': 2.9210236072540283, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 13.3505, 'eval_samples_per_second': 0.225, 'eval_steps_per_second': 0.225, 'epoch': 2.0}
+  6%|█████▏                                                                                | 6/100 [00:58<17:12, 10.98s/it]2025-04-18 16:50:01,861 - INFO - Using default tokenizer.
+{'eval_loss': 2.9129555225372314, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 13.0336, 'eval_samples_per_second': 0.23, 'eval_steps_per_second': 0.23, 'epoch': 3.0}
+  8%|██████▉                                                                               | 8/100 [01:13<12:51,  8.39s/it]2025-04-18 16:50:15,315 - INFO - Using default tokenizer.
+{'eval_loss': 2.9129555225372314, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 13.2003, 'eval_samples_per_second': 0.227, 'eval_steps_per_second': 0.227, 'epoch': 4.0}
+  9%|███████▋                                                                              | 9/100 [01:26<15:07,  9.97s/it]2025-04-18 16:50:31,335 - INFO - Using default tokenizer.
+{'eval_loss': 2.9129555225372314, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 14.1767, 'eval_samples_per_second': 0.212, 'eval_steps_per_second': 0.212, 'epoch': 5.0}
+ 10%|████████▌                                                                            | 10/100 [01:42<17:45, 11.84s/it]2025-04-18 16:50:46,903 - INFO - Using default tokenizer.
+{'eval_loss': 2.905949592590332, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 12.7572, 'eval_samples_per_second': 0.235, 'eval_steps_per_second': 0.235, 'epoch': 6.0}
+ 11%|█████████▎                                                                           | 11/100 [01:58<19:22, 13.06s/it]2025-04-18 16:51:02,271 - INFO - Using default tokenizer.
+{'eval_loss': 2.905949592590332, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 15.3279, 'eval_samples_per_second': 0.196, 'eval_steps_per_second': 0.196, 'epoch': 7.0}
+ 12%|██████████▏                                                                          | 12/100 [02:13<20:04, 13.69s/it]2025-04-18 16:51:16,271 - INFO - Using default tokenizer.
+{'eval_loss': 2.9002373218536377, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 14.8872, 'eval_samples_per_second': 0.202, 'eval_steps_per_second': 0.202, 'epoch': 8.0}
+ 14%|███████████▉                                                                         | 14/100 [02:27<13:49,  9.65s/it]2025-04-18 16:51:33,420 - INFO - Using default tokenizer.
+{'eval_loss': 2.9002373218536377, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 14.4193, 'eval_samples_per_second': 0.208, 'eval_steps_per_second': 0.208, 'epoch': 9.0}
+ 15%|████████████▊                                                                        | 15/100 [02:44<16:50, 11.89s/it]2025-04-18 16:51:49,496 - INFO - Using default tokenizer.
+{'eval_loss': 2.9002373218536377, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03283641816182379, 'eval_runtime': 13.2998, 'eval_samples_per_second': 0.226, 'eval_steps_per_second': 0.226, 'epoch': 10.0}
+ 16%|█████████████▌                                                                       | 16/100 [03:00<18:23, 13.14s/it]2025-04-18 16:52:02,794 - INFO - Using default tokenizer.
+{'eval_loss': 2.8916594982147217, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03298285406247508, 'eval_runtime': 16.4047, 'eval_samples_per_second': 0.183, 'eval_steps_per_second': 0.183, 'epoch': 11.0}
+ 18%|███████████████▎                                                                     | 18/100 [03:14<12:39,  9.26s/it]2025-04-18 16:52:16,874 - INFO - Using default tokenizer.
+{'eval_loss': 2.8916594982147217, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03298285406247508, 'eval_runtime': 15.3875, 'eval_samples_per_second': 0.195, 'eval_steps_per_second': 0.195, 'epoch': 12.0}
+ 19%|████████████████▏                                                                    | 19/100 [03:28<14:27, 10.71s/it]2025-04-18 16:52:31,223 - INFO - Using default tokenizer.
+{'eval_loss': 2.8916594982147217, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03298285406247508, 'eval_runtime': 12.6558, 'eval_samples_per_second': 0.237, 'eval_steps_per_second': 0.237, 'epoch': 13.0}
+ 20%|█████████████████                                                                    | 20/100 [03:42<15:46, 11.84s/it]2025-04-18 16:52:47,940 - INFO - Using default tokenizer.
+{'eval_loss': 2.883498191833496, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03298285406247508, 'eval_runtime': 13.4203, 'eval_samples_per_second': 0.224, 'eval_steps_per_second': 0.224, 'epoch': 14.0}
+ 21%|█████████████████▊                                                                   | 21/100 [03:59<17:27, 13.26s/it]2025-04-18 16:53:06,585 - INFO - Using default tokenizer.
+{'eval_loss': 2.883498191833496, 'eval_rouge1': 0.24125831820931642, 'eval_rouge2': 0.05823946599916563, 'eval_rougeL': 0.1649929421254285, 'eval_bleu': 0.03298285406247508, 'eval_runtime': 13.6995, 'eval_samples_per_second': 0.219, 'eval_steps_per_second': 0.219, 'epoch': 15.0}
+ 22%|██████████████████▋                                                                  | 22/100 [04:18<19:22, 14.90s/it]2025-04-18 16:53:23,934 - INFO - Using default tokenizer.
+{'eval_loss': 2.877598524093628, 'eval_rouge1': 0.21060884123764448, 'eval_rouge2': 0.0397506346604968, 'eval_rougeL': 0.14597057213690076, 'eval_bleu': 0.026791985445195204, 'eval_runtime': 15.9429, 'eval_samples_per_second': 0.188, 'eval_steps_per_second': 0.188, 'epoch': 16.0}
+ 24%|████████████████████▍                                                                | 24/100 [04:35<13:52, 10.95s/it]2025-04-18 16:53:40,063 - INFO - Using default tokenizer.
+{'eval_loss': 2.877598524093628, 'eval_rouge1': 0.21060884123764448, 'eval_rouge2': 0.0397506346604968, 'eval_rougeL': 0.14597057213690076, 'eval_bleu': 0.026791985445195204, 'eval_runtime': 18.0123, 'eval_samples_per_second': 0.167, 'eval_steps_per_second': 0.167, 'epoch': 17.0}
+ 25%|█████████████████████▎                                                               | 25/100 [04:51<15:38, 12.52s/it]2025-04-18 16:53:56,293 - INFO - Using default tokenizer.
+{'eval_loss': 2.877598524093628, 'eval_rouge1': 0.21060884123764448, 'eval_rouge2': 0.0397506346604968, 'eval_rougeL': 0.14597057213690076, 'eval_bleu': 0.026791985445195204, 'eval_runtime': 16.6278, 'eval_samples_per_second': 0.18, 'eval_steps_per_second': 0.18, 'epoch': 18.0}
+ 26%|██████████████████████                                                               | 26/100 [05:07<16:47, 13.62s/it]2025-04-18 16:54:12,487 - INFO - Using default tokenizer.
+{'eval_loss': 2.8799009323120117, 'eval_rouge1': 0.21060884123764448, 'eval_rouge2': 0.0397506346604968, 'eval_rougeL': 0.14597057213690076, 'eval_bleu': 0.026791985445195204, 'eval_runtime': 15.4462, 'eval_samples_per_second': 0.194, 'eval_steps_per_second': 0.194, 'epoch': 19.0}
+ 28%|███████████████████████▊                                                             | 28/100 [05:24<12:07, 10.11s/it]2025-04-18 16:54:28,598 - INFO - Using default tokenizer.
+{'eval_loss': 2.8799009323120117, 'eval_rouge1': 0.21060884123764448, 'eval_rouge2': 0.0397506346604968, 'eval_rougeL': 0.14597057213690076, 'eval_bleu': 0.026791985445195204, 'eval_runtime': 15.5097, 'eval_samples_per_second': 0.193, 'eval_steps_per_second': 0.193, 'epoch': 20.0}
+ 29%|████████████████████████▋                                                            | 29/100 [05:40<14:06, 11.93s/it]2025-04-18 16:54:46,610 - INFO - Using default tokenizer.
+{'eval_loss': 2.8799009323120117, 'eval_rouge1': 0.21060884123764448, 'eval_rouge2': 0.0397506346604968, 'eval_rougeL': 0.14597057213690076, 'eval_bleu': 0.026791985445195204, 'eval_runtime': 15.5232, 'eval_samples_per_second': 0.193, 'eval_steps_per_second': 0.193, 'epoch': 21.0}
+ 30%|█████████████████████████▌                                                           | 30/100 [05:58<16:04, 13.78s/it]2025-04-18 16:55:02,066 - INFO - Using default tokenizer.
+{'eval_loss': 2.88739013671875, 'eval_rouge1': 0.21272681923052938, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.153946083016358, 'eval_bleu': 0.026183666956562855, 'eval_runtime': 15.4373, 'eval_samples_per_second': 0.194, 'eval_steps_per_second': 0.194, 'epoch': 22.0}
+ 31%|██████████████████████████▎                                                          | 31/100 [06:13<16:24, 14.26s/it]2025-04-18 16:55:17,119 - INFO - Using default tokenizer.
+{'eval_loss': 2.88739013671875, 'eval_rouge1': 0.21272681923052938, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.153946083016358, 'eval_bleu': 0.026183666956562855, 'eval_runtime': 17.2751, 'eval_samples_per_second': 0.174, 'eval_steps_per_second': 0.174, 'epoch': 23.0}
+ 32%|███████████████████████████▏                                                         | 32/100 [06:28<16:25, 14.49s/it]2025-04-18 16:55:31,872 - INFO - Using default tokenizer.
+{'eval_loss': 2.893265962600708, 'eval_rouge1': 0.21272681923052938, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.153946083016358, 'eval_bleu': 0.026183666956562855, 'eval_runtime': 14.6361, 'eval_samples_per_second': 0.205, 'eval_steps_per_second': 0.205, 'epoch': 24.0}
+ 34%|████████████████████████████▉                                                        | 34/100 [06:43<11:15, 10.23s/it]2025-04-18 16:55:47,193 - INFO - Using default tokenizer.
+{'eval_loss': 2.893265962600708, 'eval_rouge1': 0.21272681923052938, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.153946083016358, 'eval_bleu': 0.026183666956562855, 'eval_runtime': 14.2968, 'eval_samples_per_second': 0.21, 'eval_steps_per_second': 0.21, 'epoch': 25.0}
+ 35%|█████████████████████████████▋                                                       | 35/100 [06:58<12:41, 11.72s/it]2025-04-18 16:56:02,357 - INFO - Using default tokenizer.
+{'eval_loss': 2.893265962600708, 'eval_rouge1': 0.21272681923052938, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.153946083016358, 'eval_bleu': 0.026183666956562855, 'eval_runtime': 14.0163, 'eval_samples_per_second': 0.214, 'eval_steps_per_second': 0.214, 'epoch': 26.0}
+ 36%|██████████████████████████████▌                                                      | 36/100 [07:13<13:36, 12.75s/it]2025-04-18 16:56:17,502 - INFO - Using default tokenizer.
+{'eval_loss': 2.8985698223114014, 'eval_rouge1': 0.21272681923052938, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.153946083016358, 'eval_bleu': 0.026183666956562855, 'eval_runtime': 14.5218, 'eval_samples_per_second': 0.207, 'eval_steps_per_second': 0.207, 'epoch': 27.0}
+ 38%|████████████████████████████████▎                                                    | 38/100 [07:29<09:49,  9.51s/it]2025-04-18 16:56:31,116 - INFO - Using default tokenizer.
+{'eval_loss': 2.8985698223114014, 'eval_rouge1': 0.21272681923052938, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.153946083016358, 'eval_bleu': 0.026183666956562855, 'eval_runtime': 14.5046, 'eval_samples_per_second': 0.207, 'eval_steps_per_second': 0.207, 'epoch': 28.0}
+ 39%|█████████████████████████████████▏                                                   | 39/100 [07:42<10:52, 10.69s/it]2025-04-18 16:56:43,988 - INFO - Using default tokenizer.
+{'eval_loss': 2.8985698223114014, 'eval_rouge1': 0.21272681923052938, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.153946083016358, 'eval_bleu': 0.026183666956562855, 'eval_runtime': 14.4882, 'eval_samples_per_second': 0.207, 'eval_steps_per_second': 0.207, 'epoch': 29.0}
+ 40%|██████████████████████████████████                                                   | 40/100 [07:55<11:22, 11.38s/it]2025-04-18 16:56:58,259 - INFO - Using default tokenizer.
+{'eval_loss': 2.904400587081909, 'eval_rouge1': 0.26140836081267954, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.19406327932016687, 'eval_bleu': 0.033794563830442666, 'eval_runtime': 12.7687, 'eval_samples_per_second': 0.235, 'eval_steps_per_second': 0.235, 'epoch': 30.0}
+ 41%|██████████████████████████████████▊                                                  | 41/100 [08:09<12:02, 12.25s/it]2025-04-18 16:57:12,325 - INFO - Using default tokenizer.
+{'eval_loss': 2.904400587081909, 'eval_rouge1': 0.26140836081267954, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.19406327932016687, 'eval_bleu': 0.033794563830442666, 'eval_runtime': 12.2136, 'eval_samples_per_second': 0.246, 'eval_steps_per_second': 0.246, 'epoch': 31.0}
+ 42%|███████████████████████████████████▋                                                 | 42/100 [08:24<12:23, 12.82s/it]2025-04-18 16:57:25,544 - INFO - Using default tokenizer.
+{'eval_loss': 2.911186933517456, 'eval_rouge1': 0.26140836081267954, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.19406327932016687, 'eval_bleu': 0.03370801566005962, 'eval_runtime': 13.486, 'eval_samples_per_second': 0.222, 'eval_steps_per_second': 0.222, 'epoch': 32.0}
+ 44%|█████████████████████████████████████▍                                               | 44/100 [08:37<08:27,  9.07s/it]2025-04-18 16:57:38,935 - INFO - Using default tokenizer.
+{'eval_loss': 2.911186933517456, 'eval_rouge1': 0.26140836081267954, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.19406327932016687, 'eval_bleu': 0.03370801566005962, 'eval_runtime': 13.285, 'eval_samples_per_second': 0.226, 'eval_steps_per_second': 0.226, 'epoch': 33.0}
+ 45%|██████████████████████████████████████▎                                              | 45/100 [08:50<09:30, 10.37s/it]2025-04-18 16:57:52,117 - INFO - Using default tokenizer.
+{'eval_loss': 2.911186933517456, 'eval_rouge1': 0.26140836081267954, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.19406327932016687, 'eval_bleu': 0.03370801566005962, 'eval_runtime': 12.3614, 'eval_samples_per_second': 0.243, 'eval_steps_per_second': 0.243, 'epoch': 34.0}
+ 46%|███████████████████████████████████████                                              | 46/100 [09:03<10:04, 11.20s/it]2025-04-18 16:58:05,274 - INFO - Using default tokenizer.
+{'eval_loss': 2.9208831787109375, 'eval_rouge1': 0.26140836081267954, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.19406327932016687, 'eval_bleu': 0.03370801566005962, 'eval_runtime': 12.5772, 'eval_samples_per_second': 0.239, 'eval_steps_per_second': 0.239, 'epoch': 35.0}
+ 48%|████████████████████████████████████████▊                                            | 48/100 [09:16<07:10,  8.28s/it]2025-04-18 16:58:18,901 - INFO - Using default tokenizer.
+{'eval_loss': 2.9208831787109375, 'eval_rouge1': 0.26140836081267954, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.19406327932016687, 'eval_bleu': 0.03370801566005962, 'eval_runtime': 12.359, 'eval_samples_per_second': 0.243, 'eval_steps_per_second': 0.243, 'epoch': 36.0}
+ 49%|█████████████████████████████████████████▋                                           | 49/100 [09:30<08:22,  9.86s/it]2025-04-18 16:58:32,077 - INFO - Using default tokenizer.
+{'eval_loss': 2.9208831787109375, 'eval_rouge1': 0.26140836081267954, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.19406327932016687, 'eval_bleu': 0.03370801566005962, 'eval_runtime': 12.3727, 'eval_samples_per_second': 0.242, 'eval_steps_per_second': 0.242, 'epoch': 37.0}
+ 50%|██████████████████████████████████████████▌                                          | 50/100 [09:43<09:03, 10.87s/it]2025-04-18 16:58:46,102 - INFO - Using default tokenizer.
+{'eval_loss': 2.923205614089966, 'eval_rouge1': 0.26140836081267954, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.19406327932016687, 'eval_bleu': 0.03370801566005962, 'eval_runtime': 12.8964, 'eval_samples_per_second': 0.233, 'eval_steps_per_second': 0.233, 'epoch': 38.0}
+ 51%|███████████████████████████████████████████▎                                         | 51/100 [09:57<09:41, 11.86s/it]2025-04-18 16:59:00,645 - INFO - Using default tokenizer.
+{'eval_loss': 2.923205614089966, 'eval_rouge1': 0.26140836081267954, 'eval_rouge2': 0.04217263449230237, 'eval_rougeL': 0.19406327932016687, 'eval_bleu': 0.03370801566005962, 'eval_runtime': 12.5198, 'eval_samples_per_second': 0.24, 'eval_steps_per_second': 0.24, 'epoch': 39.0}
+{'loss': 0.6227, 'learning_rate': 0.0005, 'epoch': 40.0}
+ 52%|████████████████████████████████████████████▏                                        | 52/100 [10:12<10:07, 12.66s/it]2025-04-18 16:59:14,489 - INFO - Using default tokenizer.
+{'eval_loss': 2.9235050678253174, 'eval_rouge1': 0.33485713426145297, 'eval_rouge2': 0.13220206239394336, 'eval_rougeL': 0.2675120527689403, 'eval_bleu': 0.09651347619803499, 'eval_runtime': 13.3202, 'eval_samples_per_second': 0.225, 'eval_steps_per_second': 0.225, 'epoch': 40.0}
+ 54%|█████████████████████████████████████████████▉                                       | 54/100 [10:26<06:58,  9.10s/it]2025-04-18 16:59:28,790 - INFO - Using default tokenizer.
+{'eval_loss': 2.9235050678253174, 'eval_rouge1': 0.33485713426145297, 'eval_rouge2': 0.13220206239394336, 'eval_rougeL': 0.2675120527689403, 'eval_bleu': 0.09651347619803499, 'eval_runtime': 13.7067, 'eval_samples_per_second': 0.219, 'eval_steps_per_second': 0.219, 'epoch': 41.0}
+ 55%|██████████████████████████████████████████████▊                                      | 55/100 [10:40<08:00, 10.69s/it]2025-04-18 16:59:44,932 - INFO - Using default tokenizer.
+{'eval_loss': 2.9235050678253174, 'eval_rouge1': 0.33485713426145297, 'eval_rouge2': 0.13220206239394336, 'eval_rougeL': 0.2675120527689403, 'eval_bleu': 0.09651347619803499, 'eval_runtime': 13.0017, 'eval_samples_per_second': 0.231, 'eval_steps_per_second': 0.231, 'epoch': 42.0}
+ 56%|███████████████████████████████████████████████▌                                     | 56/100 [10:56<09:00, 12.29s/it]2025-04-18 16:59:58,551 - INFO - Using default tokenizer.
+{'eval_loss': 2.9180171489715576, 'eval_rouge1': 0.33485713426145297, 'eval_rouge2': 0.13220206239394336, 'eval_rougeL': 0.2675120527689403, 'eval_bleu': 0.09651347619803499, 'eval_runtime': 13.6058, 'eval_samples_per_second': 0.22, 'eval_steps_per_second': 0.22, 'epoch': 43.0}
+ 58%|█████████████████████████████████████████████████▎                                   | 58/100 [11:10<06:14,  8.92s/it]2025-04-18 17:00:12,098 - INFO - Using default tokenizer.
+{'eval_loss': 2.9180171489715576, 'eval_rouge1': 0.33485713426145297, 'eval_rouge2': 0.13220206239394336, 'eval_rougeL': 0.2675120527689403, 'eval_bleu': 0.09651347619803499, 'eval_runtime': 15.3573, 'eval_samples_per_second': 0.195, 'eval_steps_per_second': 0.195, 'epoch': 44.0}
+ 59%|██████████████████████████████████████████████████▏                                  | 59/100 [11:23<07:02, 10.32s/it]2025-04-18 17:00:25,760 - INFO - Using default tokenizer.
+{'eval_loss': 2.9180171489715576, 'eval_rouge1': 0.33485713426145297, 'eval_rouge2': 0.13220206239394336, 'eval_rougeL': 0.2675120527689403, 'eval_bleu': 0.09651347619803499, 'eval_runtime': 12.9342, 'eval_samples_per_second': 0.232, 'eval_steps_per_second': 0.232, 'epoch': 45.0}
+ 60%|███████████████████████████████████████████████████                                  | 60/100 [11:37<07:33, 11.34s/it]2025-04-18 17:00:39,509 - INFO - Using default tokenizer.
+{'eval_loss': 2.912700653076172, 'eval_rouge1': 0.378588566228179, 'eval_rouge2': 0.17079468994362612, 'eval_rougeL': 0.31124348473566643, 'eval_bleu': 0.1103550343049323, 'eval_runtime': 12.8752, 'eval_samples_per_second': 0.233, 'eval_steps_per_second': 0.233, 'epoch': 46.0}
+ 61%|███████████████████████████████████████████████████▊                                 | 61/100 [11:51<07:49, 12.04s/it]2025-04-18 17:00:53,462 - INFO - Using default tokenizer.
+{'eval_loss': 2.912700653076172, 'eval_rouge1': 0.378588566228179, 'eval_rouge2': 0.17079468994362612, 'eval_rougeL': 0.31124348473566643, 'eval_bleu': 0.1103550343049323, 'eval_runtime': 12.9498, 'eval_samples_per_second': 0.232, 'eval_steps_per_second': 0.232, 'epoch': 47.0}
+ 62%|████████████████████████████████████████████████████▋                                | 62/100 [12:05<07:59, 12.62s/it]2025-04-18 17:01:07,189 - INFO - Using default tokenizer.
+{'eval_loss': 2.9111766815185547, 'eval_rouge1': 0.378588566228179, 'eval_rouge2': 0.17079468994362612, 'eval_rougeL': 0.31124348473566643, 'eval_bleu': 0.1103550343049323, 'eval_runtime': 12.9646, 'eval_samples_per_second': 0.231, 'eval_steps_per_second': 0.231, 'epoch': 48.0}
+ 64%|██████████████████████████████████████████████████████▍                              | 64/100 [12:18<05:26,  9.08s/it]2025-04-18 17:01:21,906 - INFO - Using default tokenizer.
+{'eval_loss': 2.9111766815185547, 'eval_rouge1': 0.378588566228179, 'eval_rouge2': 0.17079468994362612, 'eval_rougeL': 0.31124348473566643, 'eval_bleu': 0.1103550343049323, 'eval_runtime': 13.2301, 'eval_samples_per_second': 0.227, 'eval_steps_per_second': 0.227, 'epoch': 49.0}
+ 65%|███████████████████████████████████████████████████████▎                             | 65/100 [12:33<06:17, 10.77s/it]2025-04-18 17:01:41,042 - INFO - Using default tokenizer.
+{'eval_loss': 2.9111766815185547, 'eval_rouge1': 0.378588566228179, 'eval_rouge2': 0.17079468994362612, 'eval_rougeL': 0.31124348473566643, 'eval_bleu': 0.1103550343049323, 'eval_runtime': 12.9838, 'eval_samples_per_second': 0.231, 'eval_steps_per_second': 0.231, 'epoch': 50.0}
+ 66%|████████████████████████████████████████████████████████                             | 66/100 [12:52<07:33, 13.34s/it]2025-04-18 17:01:56,217 - INFO - Using default tokenizer.
+{'eval_loss': 2.912482500076294, 'eval_rouge1': 0.3242899236942424, 'eval_rouge2': 0.12293144208037825, 'eval_rougeL': 0.25694484220172975, 'eval_bleu': 0.0919811218842547, 'eval_runtime': 14.027, 'eval_samples_per_second': 0.214, 'eval_steps_per_second': 0.214, 'epoch': 51.0}
+ 68%|█████████████████████████████████████████████████████████▊                           | 68/100 [13:07<05:11,  9.74s/it]2025-04-18 17:02:11,391 - INFO - Using default tokenizer.
+{'eval_loss': 2.912482500076294, 'eval_rouge1': 0.3242899236942424, 'eval_rouge2': 0.12293144208037825, 'eval_rougeL': 0.25694484220172975, 'eval_bleu': 0.0919811218842547, 'eval_runtime': 18.4552, 'eval_samples_per_second': 0.163, 'eval_steps_per_second': 0.163, 'epoch': 52.0}
+ 69%|██████████████████████████████████████████████████████████▋                          | 69/100 [13:23<05:53, 11.40s/it]2025-04-18 17:02:26,580 - INFO - Using default tokenizer.
+{'eval_loss': 2.912482500076294, 'eval_rouge1': 0.3242899236942424, 'eval_rouge2': 0.12293144208037825, 'eval_rougeL': 0.25694484220172975, 'eval_bleu': 0.0919811218842547, 'eval_runtime': 14.2875, 'eval_samples_per_second': 0.21, 'eval_steps_per_second': 0.21, 'epoch': 53.0}
+ 70%|███████████████████████████████████████████████████████████▍                         | 70/100 [13:38<06:14, 12.50s/it]2025-04-18 17:02:41,158 - INFO - Using default tokenizer.
+{'eval_loss': 2.9140167236328125, 'eval_rouge1': 0.3242899236942424, 'eval_rouge2': 0.12293144208037825, 'eval_rougeL': 0.25694484220172975, 'eval_bleu': 0.0919811218842547, 'eval_runtime': 14.3856, 'eval_samples_per_second': 0.209, 'eval_steps_per_second': 0.209, 'epoch': 54.0}
+ 71%|████████████████████████████████████████████████████████████▎                        | 71/100 [13:52<06:21, 13.15s/it]2025-04-18 17:02:55,740 - INFO - Using default tokenizer.
+{'eval_loss': 2.9140167236328125, 'eval_rouge1': 0.3242899236942424, 'eval_rouge2': 0.12293144208037825, 'eval_rougeL': 0.25694484220172975, 'eval_bleu': 0.0919811218842547, 'eval_runtime': 14.32, 'eval_samples_per_second': 0.209, 'eval_steps_per_second': 0.209, 'epoch': 55.0}
+ 72%|█████████████████████████████████████████████████████████████▏                       | 72/100 [14:07<06:19, 13.54s/it]2025-04-18 17:03:09,812 - INFO - Using default tokenizer.
+{'eval_loss': 2.9160242080688477, 'eval_rouge1': 0.3242899236942424, 'eval_rouge2': 0.12293144208037825, 'eval_rougeL': 0.25694484220172975, 'eval_bleu': 0.0919811218842547, 'eval_runtime': 13.8393, 'eval_samples_per_second': 0.217, 'eval_steps_per_second': 0.217, 'epoch': 56.0}
+ 74%|██████████████████████████████████████████████████████████████▉                      | 74/100 [14:21<04:09,  9.61s/it]2025-04-18 17:03:24,412 - INFO - Using default tokenizer.
+{'eval_loss': 2.9160242080688477, 'eval_rouge1': 0.3242899236942424, 'eval_rouge2': 0.12293144208037825, 'eval_rougeL': 0.25694484220172975, 'eval_bleu': 0.0919811218842547, 'eval_runtime': 13.7343, 'eval_samples_per_second': 0.218, 'eval_steps_per_second': 0.218, 'epoch': 57.0}
+ 75%|███████████████████████████████████████████████████████████████▊                     | 75/100 [14:35<04:37, 11.09s/it]2025-04-18 17:03:38,405 - INFO - Using default tokenizer.
+{'eval_loss': 2.9160242080688477, 'eval_rouge1': 0.3242899236942424, 'eval_rouge2': 0.12293144208037825, 'eval_rougeL': 0.25694484220172975, 'eval_bleu': 0.0919811218842547, 'eval_runtime': 13.352, 'eval_samples_per_second': 0.225, 'eval_steps_per_second': 0.225, 'epoch': 58.0}
+ 76%|████████████████████████████████████████████████████████████████▌                    | 76/100 [14:49<04:47, 11.98s/it]2025-04-18 17:03:53,964 - INFO - Using default tokenizer.
+{'eval_loss': 2.919452428817749, 'eval_rouge1': 0.3242899236942424, 'eval_rouge2': 0.12293144208037825, 'eval_rougeL': 0.25694484220172975, 'eval_bleu': 0.0919811218842547, 'eval_runtime': 13.8776, 'eval_samples_per_second': 0.216, 'eval_steps_per_second': 0.216, 'epoch': 59.0}
+ 78%|██████████████████████████████████████████████████████████████████▎                  | 78/100 [15:05<03:21,  9.18s/it]2025-04-18 17:04:05,953 - INFO - Using default tokenizer.
+{'eval_loss': 2.919452428817749, 'eval_rouge1': 0.3242899236942424, 'eval_rouge2': 0.12293144208037825, 'eval_rougeL': 0.25694484220172975, 'eval_bleu': 0.0919811218842547, 'eval_runtime': 13.327, 'eval_samples_per_second': 0.225, 'eval_steps_per_second': 0.225, 'epoch': 60.0}
+ 79%|███████████████████████████████████████████████████████████████████▏                 | 79/100 [15:17<03:30, 10.03s/it]2025-04-18 17:04:18,515 - INFO - Using default tokenizer.
+{'eval_loss': 2.919452428817749, 'eval_rouge1': 0.3242899236942424, 'eval_rouge2': 0.12293144208037825, 'eval_rougeL': 0.25694484220172975, 'eval_bleu': 0.0919811218842547, 'eval_runtime': 14.8418, 'eval_samples_per_second': 0.202, 'eval_steps_per_second': 0.202, 'epoch': 61.0}
+ 80%|████████████████████████████████████████████████████████████████████                 | 80/100 [15:30<03:35, 10.79s/it]2025-04-18 17:04:30,505 - INFO - Using default tokenizer.
+{'eval_loss': 2.9225263595581055, 'eval_rouge1': 0.3443246365649369, 'eval_rouge2': 0.13189964157706094, 'eval_rougeL': 0.26610185809184556, 'eval_bleu': 0.11349287750465238, 'eval_runtime': 11.2539, 'eval_samples_per_second': 0.267, 'eval_steps_per_second': 0.267, 'epoch': 62.0}
+ 81%|████████████████████████████████████████████████████████████████████▊                | 81/100 [15:42<03:31, 11.15s/it]2025-04-18 17:04:43,341 - INFO - Using default tokenizer.
+{'eval_loss': 2.9225263595581055, 'eval_rouge1': 0.3443246365649369, 'eval_rouge2': 0.13189964157706094, 'eval_rougeL': 0.26610185809184556, 'eval_bleu': 0.11349287750465238, 'eval_runtime': 11.8031, 'eval_samples_per_second': 0.254, 'eval_steps_per_second': 0.254, 'epoch': 63.0}
+ 82%|█████████████████████████████████████████████████████████████████████▋               | 82/100 [15:54<03:29, 11.66s/it]2025-04-18 17:04:55,659 - INFO - Using default tokenizer.
+{'eval_loss': 2.9285316467285156, 'eval_rouge1': 0.3352703830458384, 'eval_rouge2': 0.12991452991452992, 'eval_rougeL': 0.2622137492247973, 'eval_bleu': 0.10970463945997791, 'eval_runtime': 11.2265, 'eval_samples_per_second': 0.267, 'eval_steps_per_second': 0.267, 'epoch': 64.0}
+ 84%|███████████████████████████████████████████████████████████████████████▍             | 84/100 [16:07<02:13,  8.35s/it]2025-04-18 17:05:10,278 - INFO - Using default tokenizer.
+{'eval_loss': 2.9285316467285156, 'eval_rouge1': 0.3352703830458384, 'eval_rouge2': 0.12991452991452992, 'eval_rougeL': 0.2622137492247973, 'eval_bleu': 0.10970463945997791, 'eval_runtime': 12.1058, 'eval_samples_per_second': 0.248, 'eval_steps_per_second': 0.248, 'epoch': 65.0}
+ 85%|████████████████████████████████████████████████████████████████████████▎            | 85/100 [16:21<02:32, 10.18s/it]2025-04-18 17:05:22,922 - INFO - Using default tokenizer.
+{'eval_loss': 2.9285316467285156, 'eval_rouge1': 0.3352703830458384, 'eval_rouge2': 0.12991452991452992, 'eval_rougeL': 0.2622137492247973, 'eval_bleu': 0.10970463945997791, 'eval_runtime': 11.5407, 'eval_samples_per_second': 0.26, 'eval_steps_per_second': 0.26, 'epoch': 66.0}
+ 86%|█████████████████████████████████████████████████████████████████████████            | 86/100 [16:34<02:32, 10.92s/it]2025-04-18 17:05:35,928 - INFO - Using default tokenizer.
+{'eval_loss': 2.93337082862854, 'eval_rouge1': 0.3352703830458384, 'eval_rouge2': 0.12991452991452992, 'eval_rougeL': 0.2622137492247973, 'eval_bleu': 0.10970463945997791, 'eval_runtime': 13.7366, 'eval_samples_per_second': 0.218, 'eval_steps_per_second': 0.218, 'epoch': 67.0}
+ 88%|██████████████████████████████████████████████████████████████████████████▊          | 88/100 [16:47<01:37,  8.13s/it]2025-04-18 17:05:47,979 - INFO - Using default tokenizer.
+{'eval_loss': 2.93337082862854, 'eval_rouge1': 0.3352703830458384, 'eval_rouge2': 0.12991452991452992, 'eval_rougeL': 0.2622137492247973, 'eval_bleu': 0.10970463945997791, 'eval_runtime': 11.9372, 'eval_samples_per_second': 0.251, 'eval_steps_per_second': 0.251, 'epoch': 68.0}
+ 89%|███████████████████████████████████████████████████████████████████████████▋         | 89/100 [16:59<01:42,  9.29s/it]2025-04-18 17:06:00,634 - INFO - Using default tokenizer.
+{'eval_loss': 2.93337082862854, 'eval_rouge1': 0.3352703830458384, 'eval_rouge2': 0.12991452991452992, 'eval_rougeL': 0.2622137492247973, 'eval_bleu': 0.10970463945997791, 'eval_runtime': 12.3045, 'eval_samples_per_second': 0.244, 'eval_steps_per_second': 0.244, 'epoch': 69.0}
+ 90%|████████████████████████████████████████████████████████████████████████████▌        | 90/100 [17:12<01:43, 10.31s/it]2025-04-18 17:06:14,218 - INFO - Using default tokenizer.
+{'eval_loss': 2.9372940063476562, 'eval_rouge1': 0.3352703830458384, 'eval_rouge2': 0.12991452991452992, 'eval_rougeL': 0.2622137492247973, 'eval_bleu': 0.10970463945997791, 'eval_runtime': 11.3116, 'eval_samples_per_second': 0.265, 'eval_steps_per_second': 0.265, 'epoch': 70.0}
+ 91%|█████████████████████████████████████████████████████████████████████████████▎       | 91/100 [17:25<01:41, 11.32s/it]2025-04-18 17:06:26,501 - INFO - Using default tokenizer.
+{'eval_loss': 2.9372940063476562, 'eval_rouge1': 0.3352703830458384, 'eval_rouge2': 0.12991452991452992, 'eval_rougeL': 0.2622137492247973, 'eval_bleu': 0.10970463945997791, 'eval_runtime': 11.9769, 'eval_samples_per_second': 0.25, 'eval_steps_per_second': 0.25, 'epoch': 71.0}
+ 92%|██████████████████████████████████████████████████████████████████████████████▏      | 92/100 [17:38<01:32, 11.59s/it]2025-04-18 17:06:40,133 - INFO - Using default tokenizer.
+{'eval_loss': 2.9413814544677734, 'eval_rouge1': 0.3352703830458384, 'eval_rouge2': 0.12991452991452992, 'eval_rougeL': 0.2622137492247973, 'eval_bleu': 0.10970463945997791, 'eval_runtime': 12.8783, 'eval_samples_per_second': 0.233, 'eval_steps_per_second': 0.233, 'epoch': 72.0}
+ 94%|███████████████████████████████████████████████████████████████████████████████▉     | 94/100 [17:51<00:51,  8.56s/it]2025-04-18 17:06:52,841 - INFO - Using default tokenizer.
+{'eval_loss': 2.9413814544677734, 'eval_rouge1': 0.3352703830458384, 'eval_rouge2': 0.12991452991452992, 'eval_rougeL': 0.2622137492247973, 'eval_bleu': 0.10970463945997791, 'eval_runtime': 11.4754, 'eval_samples_per_second': 0.261, 'eval_steps_per_second': 0.261, 'epoch': 73.0}
+ 95%|████████████████████████████████████████████████████████████████████████████████▊    | 95/100 [18:04<00:49,  9.81s/it]2025-04-18 17:07:05,141 - INFO - Using default tokenizer.
+{'eval_loss': 2.9413814544677734, 'eval_rouge1': 0.3352703830458384, 'eval_rouge2': 0.12991452991452992, 'eval_rougeL': 0.2622137492247973, 'eval_bleu': 0.10970463945997791, 'eval_runtime': 12.8909, 'eval_samples_per_second': 0.233, 'eval_steps_per_second': 0.233, 'epoch': 74.0}
+ 96%|█████████████████████████████████████████████████████████████████████████████████▌   | 96/100 [18:16<00:42, 10.55s/it]2025-04-18 17:07:17,888 - INFO - Using default tokenizer.
+{'eval_loss': 2.9447460174560547, 'eval_rouge1': 0.3443246365649369, 'eval_rouge2': 0.13189964157706094, 'eval_rougeL': 0.26610185809184556, 'eval_bleu': 0.11349287750465238, 'eval_runtime': 11.9665, 'eval_samples_per_second': 0.251, 'eval_steps_per_second': 0.251, 'epoch': 75.0}
+ 98%|███████████████████████████████████████████████████████████████████████████████████▎ | 98/100 [18:29<00:15,  7.88s/it]2025-04-18 17:07:30,345 - INFO - Using default tokenizer.
+{'eval_loss': 2.9447460174560547, 'eval_rouge1': 0.3443246365649369, 'eval_rouge2': 0.13189964157706094, 'eval_rougeL': 0.26610185809184556, 'eval_bleu': 0.11349287750465238, 'eval_runtime': 11.5483, 'eval_samples_per_second': 0.26, 'eval_steps_per_second': 0.26, 'epoch': 76.0}
+ 99%|████████████████████████████████████████████████████████████████████████████████████▏| 99/100 [18:41<00:09,  9.26s/it]2025-04-18 17:07:42,474 - INFO - Using default tokenizer.
+{'eval_loss': 2.9447460174560547, 'eval_rouge1': 0.3443246365649369, 'eval_rouge2': 0.13189964157706094, 'eval_rougeL': 0.26610185809184556, 'eval_bleu': 0.11349287750465238, 'eval_runtime': 12.0135, 'eval_samples_per_second': 0.25, 'eval_steps_per_second': 0.25, 'epoch': 77.0}
+100%|████████████████████████████████████████████████████████████████████████████████████| 100/100 [18:54<00:00, 10.11s/it]2025-04-18 17:07:55,803 - INFO - Using default tokenizer.
+{'eval_loss': 2.946274995803833, 'eval_rouge1': 0.3443246365649369, 'eval_rouge2': 0.13189964157706094, 'eval_rougeL': 0.26610185809184556, 'eval_bleu': 0.11349287750465238, 'eval_runtime': 11.7648, 'eval_samples_per_second': 0.255, 'eval_steps_per_second': 0.255, 'epoch': 78.0}
+100%|████████████████████████████████████████████████████████████████████████████████████| 100/100 [19:06<00:00, 11.47s/it]
+{'eval_loss': 2.946274995803833, 'eval_rouge1': 0.3443246365649369, 'eval_rouge2': 0.13189964157706094, 'eval_rougeL': 0.26610185809184556, 'eval_bleu': 0.11349287750465238, 'eval_runtime': 11.3936, 'eval_samples_per_second': 0.263, 'eval_steps_per_second': 0.263, 'epoch': 79.0}
+{'loss': 0.4731, 'learning_rate': 0.0, 'epoch': 80.0}
+2025-04-18 17:07:56,073 - INFO - Saving model and tokenizer to ./api-docs-model                                            
+{'eval_loss': 2.946536064147949, 'eval_rouge1': 0.3443246365649369, 'eval_rouge2': 0.13189964157706094, 'eval_rougeL': 0.26610185809184556, 'eval_bleu': 0.11349287750465238, 'eval_runtime': 12.6498, 'eval_samples_per_second': 0.237, 'eval_steps_per_second': 0.237, 'epoch': 80.0}
+{'train_runtime': 1146.8031, 'train_samples_per_second': 0.262, 'train_steps_per_second': 0.087, 'train_loss': 0.5478988647460937, 'epoch': 80.0}
