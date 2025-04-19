@@ -7,3 +7,6 @@ openapi_specs
 petstore_api.json
 twitter_api.json
 codocbench/
+.env
+__pycache__/
+.textgrad_cache/

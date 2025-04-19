@@ -1,0 +1,29 @@
+2025-04-19 11:44:42,416 - INFO - Loading CoDocBench dataset from processed_dataset/train.jsonl and processed_dataset/test.jsonl
+2025-04-19 11:44:43,992 - INFO - Loading tokenizer: meta-llama/Llama-3.2-1B
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+tokenizer_config.json: 100%|███████████████████████████████████████████| 50.5k/50.5k [00:00<00:00, 1.59MB/s]
+tokenizer.json: 100%|██████████████████████████████████████████████████| 9.09M/9.09M [00:01<00:00, 8.65MB/s]
+special_tokens_map.json: 100%|█████████████████████████████████████████████| 301/301 [00:00<00:00, 1.36MB/s]
+Using pad_token, but it is not set yet.
+2025-04-19 11:44:47,327 - INFO - Not using quantization
+2025-04-19 11:44:47,327 - INFO - Loading model: meta-llama/Llama-3.2-1B
+config.json: 100%|█████████████████████████████████████████████████████████| 843/843 [00:00<00:00, 3.81MB/s]
+Traceback (most recent call last):
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 535, in <module>
+    main()
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 397, in main
+    model = AutoModelForSeq2SeqLM.from_pretrained(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 487, in from_pretrained
+    raise ValueError(
+ValueError: Unrecognized configuration class <class 'transformers.models.llama.configuration_llama.LlamaConfig'> for this kind of AutoModel: AutoModelForSeq2SeqLM.
+Model type should be one of BartConfig, BigBirdPegasusConfig, BlenderbotConfig, BlenderbotSmallConfig, EncoderDecoderConfig, FSMTConfig, GPTSanJapaneseConfig, LEDConfig, LongT5Config, M2M100Config, MarianConfig, MBartConfig, MT5Config, MvpConfig, NllbMoeConfig, PegasusConfig, PegasusXConfig, PLBartConfig, ProphetNetConfig, SwitchTransformersConfig, T5Config, XLMProphetNetConfig.
+Traceback (most recent call last):
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 535, in <module>
+    main()
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 397, in main
+    model = AutoModelForSeq2SeqLM.from_pretrained(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 487, in from_pretrained
+    raise ValueError(
+ValueError: Unrecognized configuration class <class 'transformers.models.llama.configuration_llama.LlamaConfig'> for this kind of AutoModel: AutoModelForSeq2SeqLM.
+Model type should be one of BartConfig, BigBirdPegasusConfig, BlenderbotConfig, BlenderbotSmallConfig, EncoderDecoderConfig, FSMTConfig, GPTSanJapaneseConfig, LEDConfig, LongT5Config, M2M100Config, MarianConfig, MBartConfig, MT5Config, MvpConfig, NllbMoeConfig, PegasusConfig, PegasusXConfig, PLBartConfig, ProphetNetConfig, SwitchTransformersConfig, T5Config, XLMProphetNetConfig.

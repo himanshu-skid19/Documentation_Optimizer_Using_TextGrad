@@ -3,10 +3,312 @@ import json
 import textgrad as tg
 from textgrad.engine_experimental.openai import OpenAIEngine
 import os
+import time
 from datetime import datetime
 from dotenv import load_dotenv
 from textgrad.engine import get_engine
+import hashlib
+import diskcache as dc
+from typing import Dict, List, Any, Optional, Tuple
+
+# Try importing modules with proper error handling
+try:
+    from peft import PeftConfig, PeftModel
+    from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+    import torch
+    PEFT_AVAILABLE = True
+except ImportError:
+    PEFT_AVAILABLE = False
+
+try:
+    import openai
+    from openai import OpenAI
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+
+try:
+    from textgrad.engine.local_model_openai_api import ChatExternalClient
+    LMSTUDIO_AVAILABLE = True
+except ImportError:
+    LMSTUDIO_AVAILABLE = False
+
+try:
+    from llama_index.llms import LlamaCPP
+    LLAMACPP_AVAILABLE = True
+except ImportError:
+    LLAMACPP_AVAILABLE = False
+
 load_dotenv()
+
+# ========================== MODEL ADAPTERS ==========================
+
+class PeftModelAdapter:
+    """Adapter to make PEFT models compatible with TextGrad's interface."""
+    
+    def __init__(self, model_dir, temperature=0.1):
+        """Initialize the PEFT model adapter."""
+        if not PEFT_AVAILABLE:
+            raise ImportError("PEFT and Transformers libraries are required. Install with: pip install peft transformers torch")
+            
+        # Load PEFT model using the correct sequence
+        self.config = PeftConfig.from_pretrained(model_dir)
+        self.base_model = AutoModelForSeq2SeqLM.from_pretrained(self.config.base_model_name_or_path)
+        self.model = PeftModel.from_pretrained(self.base_model, model_dir)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.config.base_model_name_or_path)
+        self.temperature = temperature
+        
+    def generate(self, content, system_prompt=None):
+        """Generate text based on input content following TextGrad's interface."""
+        # Combine system prompt and content if provided
+        if system_prompt:
+            input_text = f"{system_prompt}\n\n{content}"
+        else:
+            input_text = content
+        
+        # Tokenize input
+        inputs = self.tokenizer(input_text, return_tensors="pt", truncation=True, max_length=512)
+        
+        # Generate response
+        with torch.no_grad():
+            # Create a dictionary of generation kwargs and pass it using **kwargs syntax
+            generation_kwargs = {
+                "input_ids": inputs["input_ids"],
+                "max_new_tokens": 512,
+                "do_sample": self.temperature > 0,
+                "temperature": self.temperature if self.temperature > 0 else None
+            }
+            
+            # This ensures all args are passed as keyword arguments
+            outputs = self.model.generate(**generation_kwargs)
+        
+        # Decode response
+        response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+        return response
+
+# ========================== ENGINE IMPLEMENTATIONS ==========================
+
+class PeftEngine:
+    """Custom TextGrad engine implementation for PEFT models."""
+    
+    def __init__(self, model_dir, temperature=0.1, use_cache=True, cache_dir=".textgrad_cache"):
+        """Initialize the PEFT engine."""
+        if not PEFT_AVAILABLE:
+            raise ImportError("PEFT and Transformers libraries are required. Install with: pip install peft transformers torch")
+            
+        # Create the PEFT model adapter
+        self.model = PeftModelAdapter(model_dir=model_dir, temperature=temperature)
+        self.temperature = temperature
+        self.use_cache = use_cache
+        self.cache_dir = cache_dir
+        self.name = f"PeftEngine({os.path.basename(model_dir)})"
+        
+        # Initialize cache if needed
+        if self.use_cache:
+            os.makedirs(self.cache_dir, exist_ok=True)
+            self.cache = dc.Cache(self.cache_dir)
+            
+    def _process_textgrad_variable(self, var):
+        """Helper method to extract value from TextGrad variables."""
+        if hasattr(var, 'value'):
+            return var.value
+        return var
+    
+    def _hash_prompt(self, content: str, system_prompt: Optional[str] = None):
+        """Create a hash for the prompt to use as cache key."""
+        combined = f"{system_prompt if system_prompt else ''}|||{content}"
+        return hashlib.sha256(combined.encode()).hexdigest()
+    
+    def generate(self, content: str, system_prompt: Optional[str] = None, **kwargs):
+        """Generate text using the PEFT model."""
+        content_text = self._process_textgrad_variable(content)
+        system_prompt_text = self._process_textgrad_variable(system_prompt) if system_prompt else None
+    
+        # Check cache first if enabled
+        if self.use_cache:
+            cache_key = self._hash_prompt(content_text, system_prompt_text)
+            cached_result = self.cache.get(cache_key)
+            if cached_result is not None:
+                return cached_result
+        
+        # Generate response using the model
+        response = self.model.generate(content=content_text, system_prompt=system_prompt_text)
+        
+        # Cache the result if enabled
+        if self.use_cache:
+            self.cache[cache_key] = response
+        
+        return response
+    
+    def __call__(self, content: str, system_prompt: Optional[str] = None, **kwargs):
+        """Make the engine callable, same as generate."""
+        return self.generate(content=content, system_prompt=system_prompt, **kwargs)
+    
+    def __str__(self):
+        return self.name
+
+
+class PeftBackwardEngine(PeftEngine):
+    """Backward engine implementation for TextGrad's gradient computation."""
+    
+    def __init__(self, model_dir, temperature=0.1, use_cache=True, cache_dir=".textgrad_cache"):
+        """Initialize the PEFT backward engine."""
+        super().__init__(model_dir, temperature, use_cache, cache_dir)
+        self.name = f"PeftBackwardEngine({os.path.basename(model_dir)})"
+
+    def backward(self, output, content=None, system_prompt=None, **kwargs):
+        """Generate gradients for TextGrad optimization."""
+        # Process the inputs
+        if isinstance(output, str):
+            output_text = output
+        else:
+            output_text = output.value if hasattr(output, 'value') else str(output)
+        
+        if content is None:
+            return {"gradient": "This is a new improved documentation."}
+        
+        content_text = content.value if hasattr(content, 'value') else str(content)
+        
+        # Create a much more specific prompt that will generate usable gradient text
+        gradient_prompt = f"""
+        You are a documentation improvement expert. Your task is to REWRITE the API documentation 
+        to directly address the issues mentioned in the evaluation.
+        
+        Current documentation:
+        ```
+        {content_text}
+        ```
+        
+        Evaluation of current documentation:
+        ```
+        {output_text}
+        ```
+        
+        IMPORTANT: Don't explain what changes to make. Instead, provide the COMPLETE REVISED DOCUMENTATION
+        with all improvements already implemented. The output should be ONLY the updated documentation text
+        that can directly replace the original.
+        
+        Generate the improved documentation now:
+        """
+        
+        # Generate the improved documentation directly
+        improved_doc = self.model.generate(content=gradient_prompt, system_prompt=None)
+        
+        # TextGrad expects a dict with a "gradient" key
+        return {"gradient": improved_doc}
+
+
+class LlamaCPPEngine:
+    """TextGrad engine implementation for LlamaCPP models."""
+    
+    def __init__(self, model_path, temperature=0.1, use_cache=True, cache_dir=".textgrad_cache"):
+        """Initialize the LlamaCPP engine."""
+        if not LLAMACPP_AVAILABLE:
+            raise ImportError("llama-index and llama-cpp-python are required. Install with: pip install llama-index llama-cpp-python")
+            
+        # Initialize LlamaCPP
+        self.llm = LlamaCPP(
+            model_path=model_path,
+            temperature=temperature,
+            max_new_tokens=2048,
+            context_window=4096,
+            generate_kwargs={"temperature": temperature},
+            model_kwargs={"n_gpu_layers": -1}
+        )
+        
+        self.temperature = temperature
+        self.use_cache = use_cache
+        self.cache_dir = cache_dir
+        self.name = f"LlamaCPPEngine({os.path.basename(model_path)})"
+        
+        # Initialize cache if needed
+        if self.use_cache:
+            os.makedirs(self.cache_dir, exist_ok=True)
+            self.cache = dc.Cache(self.cache_dir)
+    
+    def _process_textgrad_variable(self, var):
+        """Helper method to extract value from TextGrad variables."""
+        if hasattr(var, 'value'):
+            return var.value
+        return var
+    
+    def _hash_prompt(self, content: str, system_prompt: Optional[str] = None):
+        """Create a hash for the prompt to use as cache key."""
+        combined = f"{system_prompt if system_prompt else ''}|||{content}"
+        return hashlib.sha256(combined.encode()).hexdigest()
+    
+    def generate(self, content: str, system_prompt: Optional[str] = None, **kwargs):
+        """Generate text using the LlamaCPP model."""
+        content_text = self._process_textgrad_variable(content)
+        system_prompt_text = self._process_textgrad_variable(system_prompt) if system_prompt else None
+    
+        # Check cache first if enabled
+        if self.use_cache:
+            cache_key = self._hash_prompt(content_text, system_prompt_text)
+            cached_result = self.cache.get(cache_key)
+            if cached_result is not None:
+                return cached_result
+        
+        # Prepare prompt
+        if system_prompt_text:
+            full_prompt = f"{system_prompt_text}\n\n{content_text}"
+        else:
+            full_prompt = content_text
+        
+        # Generate response using the LLM
+        response = self.llm.complete(full_prompt)
+        
+        # Cache the result if enabled
+        if self.use_cache:
+            self.cache[cache_key] = response
+        
+        return response
+    
+    def __call__(self, content: str, system_prompt: Optional[str] = None, **kwargs):
+        """Make the engine callable, same as generate."""
+        return self.generate(content=content, system_prompt=system_prompt, **kwargs)
+    
+    def backward(self, output, content=None, system_prompt=None, **kwargs):
+        """Generate gradients for TextGrad optimization."""
+        # Process the inputs
+        if isinstance(output, str):
+            output_text = output
+        else:
+            output_text = output.value if hasattr(output, 'value') else str(output)
+        
+        if content is None:
+            return {"gradient": "This is a new improved documentation."}
+        
+        content_text = content.value if hasattr(content, 'value') else str(content)
+        
+        # Create a specific prompt for gradient generation
+        gradient_prompt = f"""
+        You are a documentation improvement expert. Your task is to REWRITE the API documentation 
+        to directly address the issues mentioned in the evaluation.
+        
+        Current documentation:
+        ```
+        {content_text}
+        ```
+        
+        Evaluation of current documentation:
+        ```
+        {output_text}
+        ```
+        
+        IMPORTANT: Don't explain what changes to make. Instead, provide the COMPLETE REVISED DOCUMENTATION
+        with all improvements already implemented. The output should be ONLY the updated documentation text
+        that can directly replace the original.
+        
+        Generate the improved documentation now:
+        """
+        
+        # Generate the improved documentation directly
+        improved_doc = self.generate(content=gradient_prompt)
+        
+        # TextGrad expects a dict with a "gradient" key
+        return {"gradient": improved_doc}
+
 
 class APIDocOptimizerApp:
     """Streamlit application for API Documentation Optimization using TextGrad."""
@@ -14,6 +316,8 @@ class APIDocOptimizerApp:
     def __init__(self):
         """Initialize the application."""
         self.setup_page()
+        self.engine = None
+        self.eval_engine = None  # Separate engine for evaluation
         self.load_engine()
         self.optimization_history = []
         
@@ -29,54 +333,142 @@ class APIDocOptimizerApp:
     
     def load_engine(self):
         """Load the TextGrad engine with the appropriate LLM."""
-        # Add model selection in sidebar
+        # Always ask for OpenAI API key for evaluation
+        st.sidebar.subheader("OpenAI API Key (Required for Evaluation)")
+        api_key = st.sidebar.text_input("OpenAI API Key", type="password")
+        
+        if not api_key:
+            st.sidebar.warning("⚠️ OpenAI API key is required for evaluation")
+        else:
+            os.environ["OPENAI_API_KEY"] = api_key
+            try:
+                # Initialize evaluation engine with GPT-4o-mini
+                self.eval_engine = get_engine("experimental:gpt-4o-mini", cache=False)
+                st.sidebar.success("✅ OpenAI GPT-4o-mini loaded for evaluation!")
+            except Exception as e:
+                st.sidebar.error(f"Error loading OpenAI model: {str(e)}")
+                self.eval_engine = None
+        
+        # Add model selection for optimization in sidebar
+        st.sidebar.subheader("Model for Optimization")
         model_type = st.sidebar.selectbox(
             "Select Model",
-            ["OpenAI", "Local Model (LMStudio)"]
+            ["OpenAI", "Local Model (LMStudio)", "PEFT", "LlamaCPP"]
         )
         
+        # Set default engine to None
+        self.engine = None
+        
         if model_type == "OpenAI":
-            api_key = st.sidebar.text_input("OpenAI API Key", type="password")
+            if not OPENAI_AVAILABLE:
+                st.sidebar.error("OpenAI library not found. Install with: pip install openai")
+                return
+                
+            # Already have API key from above
+            model_name = st.sidebar.selectbox(
+                "Model", 
+                ["gpt-4o-mini", "gpt-4o", "gpt-3.5-turbo"],
+                index=0
+            )
             
             if api_key:
-                os.environ["OPENAI_API_KEY"] = api_key
-                self.engine = get_engine("experimental:gpt-4o-mini", cache=False)
-                st.sidebar.success("OpenAI model loaded!")
+                try:
+                    self.engine = get_engine(f"experimental:{model_name}", cache=False)
+                    st.sidebar.success(f"OpenAI {model_name} loaded for optimization!")
+                except Exception as e:
+                    st.sidebar.error(f"Error loading OpenAI model: {str(e)}")
             else:
                 st.sidebar.warning("Please enter your OpenAI API key")
-                self.engine = None
                 
         elif model_type == "Local Model (LMStudio)":
+            if not LMSTUDIO_AVAILABLE:
+                st.sidebar.error(
+                    "Required packages for LMStudio not found. "
+                    "Install with: pip install openai textgrad"
+                )
+                return
+                
             st.sidebar.info(
                 "Make sure LMStudio is running with a local server at http://localhost:1234/v1"
             )
             
+            base_url = st.sidebar.text_input("LMStudio URL", value="http://localhost:1234/v1")
+            model_name = st.sidebar.text_input(
+                "Model Name", 
+                value="Llama-3.2-1B-Instruct-Q8_0-GGUF"
+            )
+            temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7)
+            
             try:
-                from openai import OpenAI
-                from textgrad.engine.local_model_openai_api import ChatExternalClient
-                
-                # Use default LMStudio address
-                client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
-                
-                # Allow model selection
-                model_name = st.sidebar.text_input(
-                    "Model Name", 
-                    value="mlabonne/NeuralBeagle14-7B-GGUF"
-                )
-                
+                client = OpenAI(base_url=base_url, api_key="lm-studio")
                 self.engine = ChatExternalClient(client=client, model_string=model_name)
-                st.sidebar.success(f"Local model loaded: {model_name}")
+                st.sidebar.success(f"Local model loaded for optimization: {model_name}")
+            except Exception as e:
+                st.sidebar.error(f"Error loading LMStudio model: {str(e)}")
                 
-            except ImportError:
+        elif model_type == "PEFT":
+            if not PEFT_AVAILABLE:
                 st.sidebar.error(
-                    "Required packages for local model not found. "
-                    "Install with: pip install openai textgrad"
+                    "Required packages for PEFT not found. "
+                    "Install with: pip install peft transformers torch"
                 )
-                self.engine = None
+                return
                 
+            model_path = st.sidebar.text_input("PEFT Model Directory", value="api-docs-model")
+            temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7)
+            use_cache = st.sidebar.checkbox("Use Cache", value=True)
+            
+            if not os.path.exists(model_path):
+                st.sidebar.warning(f"Model path not found: {model_path}")
+                return
+                
+            try:
+                self.engine = PeftBackwardEngine(
+                    model_dir=model_path,
+                    temperature=temperature,
+                    use_cache=use_cache
+                )
+                st.sidebar.success(f"PEFT model loaded for optimization from: {model_path}")
+            except Exception as e:
+                st.sidebar.error(f"Error loading PEFT model: {str(e)}")
+                
+        elif model_type == "LlamaCPP":
+            if not LLAMACPP_AVAILABLE:
+                st.sidebar.error(
+                    "Required packages for LlamaCPP not found. "
+                    "Install with: pip install llama-index llama-cpp-python"
+                )
+                return
+                
+            model_path = st.sidebar.text_input("LlamaCPP Model Path", value="")
+            temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7)
+            use_cache = st.sidebar.checkbox("Use Cache", value=True)
+            
+            if not os.path.exists(model_path):
+                st.sidebar.warning(f"Model path not found: {model_path}")
+                return
+                
+            try:
+                self.engine = LlamaCPPEngine(
+                    model_path=model_path,
+                    temperature=temperature,
+                    use_cache=use_cache
+                )
+                st.sidebar.success(f"LlamaCPP model loaded for optimization from: {model_path}")
+            except Exception as e:
+                st.sidebar.error(f"Error loading LlamaCPP model: {str(e)}")
+        
         # Set the backward engine for TextGrad if engine is loaded
         if self.engine:
             tg.set_backward_engine(self.engine, override=True)
+            
+        # Display model information
+        st.sidebar.subheader("Active Models")
+        eval_model_info = "GPT-4o-mini (OpenAI)" if self.eval_engine else "Not loaded"
+        st.sidebar.info(f"Evaluation: {eval_model_info}")
+        
+        opt_model_info = str(self.engine) if self.engine else "Not loaded"
+        st.sidebar.info(f"Optimization: {opt_model_info}")
     
     def _create_system_prompt(self) -> str:
         """Create the system prompt for the documentation evaluation."""
@@ -93,18 +485,47 @@ class APIDocOptimizerApp:
         Be specific about what changes should be made to improve the documentation quality.
         """
     
-    def optimize_documentation(self, documentation: str, iterations: int = 1) -> str:
-        """Optimize the given API documentation using TextGrad.
-        
-        Args:
-            documentation: The API documentation to optimize
-            iterations: Number of optimization iterations
-            
-        Returns:
-            The optimized API documentation
+    def manual_update(self, documentation, feedback):
+        """Manually update documentation based on feedback when optimizer fails."""
+        # Create an explicit prompt for the model to generate improved documentation
+        update_prompt = f"""
+        Please improve this documentation based on the feedback:
+
+        CURRENT DOCUMENTATION:
+        ```
+        {documentation}
+        ```
+
+        FEEDBACK:
+        ```
+        {feedback}
+        ```
+
+        IMPORTANT: Provide ONLY the complete improved documentation text, without explanations.
+        The documentation should follow proper formatting with clear sections for Description,
+        Parameters, Returns, and Examples.
         """
+        
+        try:
+            improved_doc = self.engine.generate(content=update_prompt)
+            
+            # Clean up common formatting issues
+            improved_doc = improved_doc.replace("```", "").strip()
+            if improved_doc.lower().startswith("documentation:"):
+                improved_doc = improved_doc[13:].strip()
+                
+            return improved_doc
+        
+        except Exception as e:
+            st.error(f"Error during manual update: {str(e)}")
+            st.warning("Returning original documentation.")
+            
+            return documentation
+    
+    def optimize_documentation(self, documentation: str, iterations: int = 1) -> str:
+        """Optimize the given API documentation using TextGrad."""
         if not self.engine:
-            st.error("No TextGrad engine loaded. Please configure a model first.")
+            st.error("No optimization engine loaded. Please configure a model first.")
             return documentation
         
         # Create progress bar
@@ -126,10 +547,10 @@ class APIDocOptimizerApp:
         )
         
         # Create the loss function
-        loss_fn = tg.TextLoss(system_prompt)
+        loss_fn = tg.TextLoss(system_prompt, engine=self.engine)
         
         # Create the optimizer
-        optimizer = tg.TGD([doc_var])
+        optimizer = tg.TGD([doc_var], engine=self.engine)
         
         # Feedback container
         feedback_container = st.expander("Optimization Process", expanded=True)
@@ -145,31 +566,61 @@ class APIDocOptimizerApp:
                 
                 # Compute the loss (evaluation)
                 with st.spinner("Evaluating documentation..."):
-                    loss = loss_fn(doc_var)
-                    st.text_area(
-                        "Evaluation Feedback", 
-                        value=loss.value,
-                        height=150
-                    )
+                    try:
+                        start_time = time.time()
+                        loss = loss_fn(doc_var)
+                        eval_time = time.time() - start_time
+                        st.text_area(
+                            f"Evaluation Feedback (took {eval_time:.2f}s)", 
+                            value=loss.value,
+                            height=150
+                        )
+                        feedback = loss.value
+                    except Exception as e:
+                        st.error(f"Error during evaluation: {str(e)}")
+                        feedback = "Error during evaluation. Proceeding with manual update."
+                        continue
                 
-                # Backward pass to compute gradients
-                with st.spinner("Computing improvements..."):
-                    loss.backward()
+                # Backward pass to compute gradients & Update the documentation
+                with st.spinner("Optimizing documentation..."):
+                    try:
+                        # Backward pass
+                        start_time = time.time()
+                        loss.backward()
+                        backward_time = time.time() - start_time
+                        
+                        # Update documentation
+                        start_time = time.time()
+                        optimizer.step()
+                        step_time = time.time() - start_time
+                        
+                        st.text(f"Backward pass: {backward_time:.2f}s, Update: {step_time:.2f}s")
+                        
+                    except IndexError as e:
+                        # If optimizer fails with IndexError, use manual update
+                        st.warning(f"Optimizer error: {str(e)}")
+                        st.info("Falling back to manual update...")
+                        improved_doc = self.manual_update(doc_var.value, feedback)
+                        doc_var.value = improved_doc
+                    except Exception as e:
+                        # Catch any other exceptions
+                        st.error(f"Unexpected error during optimization: {str(e)}")
+                        st.info("Falling back to manual update...")
+                        improved_doc = self.manual_update(doc_var.value, feedback)
+                        doc_var.value = improved_doc
                 
-                # Update the documentation
-                with st.spinner("Applying improvements..."):
-                    optimizer.step()
-                    st.text_area(
-                        "Improved Documentation", 
-                        value=doc_var.value,
-                        height=200
-                    )
+                # Display improved documentation
+                st.text_area(
+                    "Improved Documentation", 
+                    value=doc_var.value,
+                    height=200
+                )
             
             # Add to optimization history
             self.optimization_history.append({
                 "iteration": i + 1,
                 "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "feedback": loss.value,
+                "feedback": feedback if 'feedback' in locals() else "No feedback available",
                 "documentation": doc_var.value
             })
         
@@ -180,22 +631,15 @@ class APIDocOptimizerApp:
         return doc_var.value
     
     def evaluate_documentation(self, documentation: str) -> dict:
-        """Evaluate the API documentation and return metrics.
-        
-        Args:
-            documentation: The API documentation to evaluate
-            
-        Returns:
-            Dictionary with evaluation scores and feedback
-        """
-        if not self.engine:
-            st.error("No TextGrad engine loaded. Please configure a model first.")
+        """Evaluate the API documentation using GPT-4o-mini and return metrics."""
+        if not self.eval_engine:
+            st.error("OpenAI evaluation engine not loaded. Please provide an API key.")
             return {
                 "completeness": 0,
                 "accuracy": 0,
                 "usability": 0,
                 "overall": 0,
-                "feedback": "No engine loaded"
+                "feedback": "OpenAI API key is required for evaluation"
             }
         
         # Create an evaluation prompt
@@ -220,42 +664,50 @@ class APIDocOptimizerApp:
         }}
         """
         
-        # Create a TextGrad variable for the documentation to evaluate
-        eval_var = tg.Variable(
-            eval_prompt,
-            requires_grad=False,
-            role_description="evaluation request"
-        )
-        
-        with st.spinner("Evaluating documentation..."):
-            # Get the evaluation response
-            response = self.engine.generate(content="Please evaluate the documentation according to the criteria provided.",system_prompt=eval_prompt)
-            
-            # Extract JSON from the response
+        with st.spinner("Evaluating documentation with GPT-4o-mini..."):
             try:
-                # Find JSON-like content in the response
-                json_start = response.find('{')
-                json_end = response.rfind('}') + 1
+                # Get the evaluation response using specifically the OpenAI evaluation engine
+                response = self.eval_engine.generate(
+                    content="Please evaluate the documentation according to the criteria provided.",
+                    system_prompt=eval_prompt
+                )
                 
-                if json_start >= 0 and json_end > json_start:
-                    json_str = response[json_start:json_end]
-                    scores = json.loads(json_str)
-                else:
-                    # Fallback if JSON parsing fails
+                # Extract JSON from the response
+                try:
+                    # Find JSON-like content in the response
+                    json_start = response.find('{')
+                    json_end = response.rfind('}') + 1
+                    
+                    if json_start >= 0 and json_end > json_start:
+                        json_str = response[json_start:json_end]
+                        scores = json.loads(json_str)
+                    else:
+                        # Fallback if JSON parsing fails
+                        st.warning("Could not extract JSON from evaluation response.")
+                        scores = {
+                            "completeness": 5,
+                            "accuracy": 5,
+                            "usability": 5,
+                            "overall": 5,
+                            "feedback": response
+                        }
+                except json.JSONDecodeError:
+                    st.warning("Failed to parse JSON in evaluation response.")
                     scores = {
-                        "completeness": 0,
-                        "accuracy": 0,
-                        "usability": 0,
-                        "overall": 0,
-                        "feedback": "Failed to parse evaluation"
+                        "completeness": 5,
+                        "accuracy": 5,
+                        "usability": 5, 
+                        "overall": 5,
+                        "feedback": response
                     }
-            except json.JSONDecodeError:
+            except Exception as e:
+                st.error(f"Error during evaluation: {str(e)}")
                 scores = {
                     "completeness": 0,
                     "accuracy": 0,
                     "usability": 0, 
                     "overall": 0,
-                    "feedback": "Failed to parse evaluation response"
+                    "feedback": f"Error during evaluation: {str(e)}"
                 }
         
         return scores
@@ -305,72 +757,97 @@ user = create_user(name="John", age=25)
             height=300
         )
         
+        # Actions in columns
+        col1, col2 = st.columns(2)
+        
         # Initial evaluation
-        if st.button("Evaluate Documentation"):
-            if current_doc:
-                evaluation = self.evaluate_documentation(current_doc)
-                
-                # Display evaluation metrics
-                col1, col2, col3, col4 = st.columns(4)
-                col1.metric("Completeness", f"{evaluation['completeness']}/10")
-                col2.metric("Technical Accuracy", f"{evaluation['accuracy']}/10")
-                col3.metric("Usability", f"{evaluation['usability']}/10")
-                col4.metric("Overall", f"{evaluation['overall']}/10")
-                
-                # Display detailed feedback
-                st.text_area(
-                    "Detailed Feedback",
-                    value=evaluation['feedback'],
-                    height=150
-                )
-            else:
-                st.warning("Please enter documentation to evaluate.")
+        with col1:
+            if st.button("Evaluate Documentation", use_container_width=True):
+                if current_doc:
+                    if not self.eval_engine:
+                        st.error("Please enter an OpenAI API key for evaluation.")
+                    else:
+                        evaluation = self.evaluate_documentation(current_doc)
+                        
+                        # Display evaluation metrics
+                        col1, col2, col3, col4 = st.columns(4)
+                        col1.metric("Completeness", f"{evaluation['completeness']}/10")
+                        col2.metric("Technical Accuracy", f"{evaluation['accuracy']}/10")
+                        col3.metric("Usability", f"{evaluation['usability']}/10")
+                        col4.metric("Overall", f"{evaluation['overall']}/10")
+                        
+                        # Display detailed feedback
+                        st.text_area(
+                            "Detailed Feedback",
+                            value=evaluation['feedback'],
+                            height=150
+                        )
+                else:
+                    st.warning("Please enter documentation to evaluate.")
         
         # Optimization
-        st.header("Documentation Optimization")
-        
-        if st.button("Start Optimization"):
-            if current_doc:
-                optimized_doc = self.optimize_documentation(
-                    current_doc,
-                    iterations=iterations
-                )
-                
-                # Display the optimized documentation
-                st.subheader("Optimized Documentation")
-                st.text_area(
-                    "Final Result",
-                    value=optimized_doc,
-                    height=300
-                )
-                
-                # Evaluate the optimized documentation
-                st.subheader("Final Evaluation")
-                final_evaluation = self.evaluate_documentation(optimized_doc)
-                
-                # Display final evaluation metrics
-                col1, col2, col3, col4 = st.columns(4)
-                col1.metric(
-                    "Completeness", 
-                    f"{final_evaluation['completeness']}/10"
-                )
-                col2.metric(
-                    "Technical Accuracy", 
-                    f"{final_evaluation['accuracy']}/10"
-                )
-                col3.metric(
-                    "Usability", 
-                    f"{final_evaluation['usability']}/10"
-                )
-                col4.metric(
-                    "Overall", 
-                    f"{final_evaluation['overall']}/10"
-                )
-            else:
-                st.warning("Please enter documentation to optimize.")
+        with col2:
+            if st.button("Start Optimization", use_container_width=True):
+                if current_doc:
+                    if not self.engine:
+                        st.error("Please configure an optimization model first.")
+                    elif not self.eval_engine:
+                        st.error("Please enter an OpenAI API key for evaluation.")
+                    else:
+                        try:
+                            optimized_doc = self.optimize_documentation(
+                                current_doc,
+                                iterations=iterations
+                            )
+                            
+                            # Display the optimized documentation
+                            st.subheader("Optimized Documentation")
+                            st.text_area(
+                                "Final Result",
+                                value=optimized_doc,
+                                height=300
+                            )
+                            
+                            # Allow copying to clipboard
+                            if st.button("Copy to Clipboard"):
+                                st.code(optimized_doc)
+                                st.success("Copied to clipboard! (Use the copy button in the code block)")
+                            
+                            # Evaluate the optimized documentation
+                            with st.expander("Final Evaluation", expanded=True):
+                                final_evaluation = self.evaluate_documentation(optimized_doc)
+                                
+                                # Display comparison of metrics
+                                initial_evaluation = self.evaluate_documentation(current_doc)
+                                
+                                # Display metrics in columns
+                                cols = st.columns(4)
+                                for i, metric in enumerate(["completeness", "accuracy", "usability", "overall"]):
+                                    metric_name = metric.capitalize()
+                                    initial_val = initial_evaluation.get(metric, 0)
+                                    final_val = final_evaluation.get(metric, 0)
+                                    diff = final_val - initial_val
+                                    
+                                    cols[i].metric(
+                                        metric_name, 
+                                        f"{final_val}/10",
+                                        f"{diff:+.1f}"
+                                    )
+                                
+                                # Display detailed feedback
+                                st.text_area(
+                                    "Detailed Feedback",
+                                    value=final_evaluation['feedback'],
+                                    height=150
+                                )
+                                
+                        except Exception as e:
+                            st.error(f"Error during optimization: {str(e)}")
+                else:
+                    st.warning("Please enter documentation to optimize.")
         
         # Reset button
-        if st.sidebar.button("Reset"):
+        if st.sidebar.button("Reset History"):
             self.optimization_history = []
             st.experimental_rerun()
         
