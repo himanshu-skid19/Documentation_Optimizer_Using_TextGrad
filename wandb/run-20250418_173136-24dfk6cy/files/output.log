@@ -1,0 +1,35 @@
+2025-04-18 17:31:37,737 - INFO - WandB initialized with run name: flan-t5-base-none
+2025-04-18 17:31:37,737 - INFO - Loading dataset from processed_data
+2025-04-18 17:31:37,737 - INFO - Loading tokenizer: google/flan-t5-base
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+2025-04-18 17:31:38,162 - INFO - Not using quantization
+2025-04-18 17:31:38,162 - INFO - Loading model: google/flan-t5-base
+2025-04-18 17:31:41,054 - INFO - Setting up LoRA for efficient fine-tuning
+trainable params: 884,736 || all params: 248,462,592 || trainable%: 0.3560841867092814
+2025-04-18 17:31:41,370 - INFO - Tokenizing datasets
+2025-04-18 17:31:42,284 - INFO - Starting training...
+Traceback (most recent call last):
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 448, in <module>
+    main()
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 417, in main
+    train_result = trainer.train()
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 1645, in train
+    return inner_training_loop(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 1659, in _inner_training_loop
+    train_dataloader = self.get_train_dataloader()
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 892, in get_train_dataloader
+    raise ValueError("Trainer: training requires a train_dataset.")
+ValueError: Trainer: training requires a train_dataset.
+Traceback (most recent call last):
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 448, in <module>
+    main()
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 417, in main
+    train_result = trainer.train()
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 1645, in train
+    return inner_training_loop(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 1659, in _inner_training_loop
+    train_dataloader = self.get_train_dataloader()
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 892, in get_train_dataloader
+    raise ValueError("Trainer: training requires a train_dataset.")
+ValueError: Trainer: training requires a train_dataset.

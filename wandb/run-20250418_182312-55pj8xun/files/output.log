@@ -1,0 +1,48 @@
+2025-04-18 18:23:13,632 - INFO - WandB initialized with run name: flan-t5-base-device-fix
+2025-04-18 18:23:13,632 - INFO - Using device: cuda
+2025-04-18 18:23:13,632 - INFO - Loading dataset from processed_dataset
+2025-04-18 18:23:14,611 - INFO - Loaded 1990 examples from processed_dataset/train.jsonl
+2025-04-18 18:23:14,921 - INFO - Loaded 426 examples from processed_dataset/val.jsonl
+2025-04-18 18:23:15,229 - INFO - Loaded 427 examples from processed_dataset/test.jsonl
+2025-04-18 18:23:15,230 - INFO - Loading tokenizer: google/flan-t5-base
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+2025-04-18 18:23:15,690 - INFO - Not using quantization
+2025-04-18 18:23:15,690 - INFO - Loading model: google/flan-t5-base
+2025-04-18 18:23:19,152 - INFO - Setting up LoRA for fine-tuning
+2025-04-18 18:23:19,565 - INFO - Model device after LoRA setup: cuda:0
+2025-04-18 18:23:19,566 - INFO - Tokenizing datasets
+Map: 100%|████████████████████████████████████████████████████████████████████| 1990/1990 [00:00<00:00, 4260.19 examples/s]
+Map: 100%|██████████████████████████████████████████████████████████████████████| 427/427 [00:00<00:00, 3840.59 examples/s]
+Map: 100%|██████████████████████████████████████████████████████████████████████| 426/426 [00:00<00:00, 3970.16 examples/s]
+2025-04-18 18:23:20,592 - INFO - Total non-ignored tokens in training set: 131378
+2025-04-18 18:23:20,619 - INFO - Starting training...
+2025-04-18 18:23:20,620 - INFO - Model device before training: cuda:0
+You're using a T5TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+2025-04-18 18:23:20,621 - INFO - Sample batch input_ids device: cuda:0
+2025-04-18 18:23:20,621 - INFO - Sample batch attention_mask device: cuda:0
+2025-04-18 18:23:20,621 - INFO - Sample batch labels device: cuda:0
+2025-04-18 18:23:20,621 - INFO - Sample batch decoder_input_ids device: cuda:0
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/optimization.py:411: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+  0%|                                                                                             | 0/4960 [00:00<?, ?it/s]2025-04-18 18:23:20,770 - ERROR - Training failed with error: cannot pin 'torch.cuda.LongTensor' only dense CPU tensors can be pinned
+2025-04-18 18:23:20,772 - ERROR - Traceback (most recent call last):
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 504, in main
+    train_result = trainer.train()
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 1645, in train
+    return inner_training_loop(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 1907, in _inner_training_loop
+    for step, inputs in enumerate(epoch_iterator):
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 634, in __next__
+    data = self._next_data()
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 680, in _next_data
+    data = _utils.pin_memory.pin_memory(data, self._pin_memory_device)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 60, in pin_memory
+    return type(data)({k: pin_memory(sample, device) for k, sample in data.items()})  # type: ignore[call-arg]
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 60, in <dictcomp>
+    return type(data)({k: pin_memory(sample, device) for k, sample in data.items()})  # type: ignore[call-arg]
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 55, in pin_memory
+    return data.pin_memory(device)
+RuntimeError: cannot pin 'torch.cuda.LongTensor' only dense CPU tensors can be pinned
+
+2025-04-18 18:23:20,772 - INFO - Saving model to ./api-docs-model-fixed

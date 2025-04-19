@@ -1,0 +1,48 @@
+{
+  "os": "Linux-6.9.3-76060903-generic-x86_64-with-glibc2.35",
+  "python": "CPython 3.10.16",
+  "startedAt": "2025-04-18T12:03:48.754394Z",
+  "args": [
+    "--model_name_or_path",
+    "google/flan-t5-base",
+    "--quantization=none",
+    "--use_wandb"
+  ],
+  "program": "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py",
+  "codePath": "train.py",
+  "git": {
+    "remote": "git@github.com:himanshu-skid19/Documentation_Optimizer_Using_TextGrad.git",
+    "commit": "7cba19f6843bd2e347a41b9da3394ba6b1e9b5ec"
+  },
+  "email": "h.singhal@iitg.ac.in",
+  "root": "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad",
+  "host": "pop-os",
+  "executable": "/home/himanshu-skid19/miniconda3/envs/ml-proj/bin/python",
+  "codePathLocal": "train.py",
+  "cpu_count": 8,
+  "cpu_count_logical": 16,
+  "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "493408342016",
+      "used": "213170495488"
+    }
+  },
+  "memory": {
+    "total": "16134463488"
+  },
+  "cpu": {
+    "count": 8,
+    "countLogical": 16
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "memoryTotal": "6442450944",
+      "cudaCores": 3840,
+      "architecture": "Ampere"
+    }
+  ],
+  "cudaVersion": "12.8"
+}

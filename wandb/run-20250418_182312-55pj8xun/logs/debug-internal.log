@@ -1,0 +1,16 @@
+{"time":"2025-04-18T18:23:12.674943226+05:30","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/wandb/run-20250418_182312-55pj8xun/logs/debug-core.log"}
+{"time":"2025-04-18T18:23:13.195381585+05:30","level":"INFO","msg":"created new stream","id":"55pj8xun"}
+{"time":"2025-04-18T18:23:13.195418384+05:30","level":"INFO","msg":"stream: started","id":"55pj8xun"}
+{"time":"2025-04-18T18:23:13.195440256+05:30","level":"INFO","msg":"writer: Do: started","stream_id":"55pj8xun"}
+{"time":"2025-04-18T18:23:13.195502323+05:30","level":"INFO","msg":"handler: started","stream_id":"55pj8xun"}
+{"time":"2025-04-18T18:23:13.19553816+05:30","level":"INFO","msg":"sender: started","stream_id":"55pj8xun"}
+{"time":"2025-04-18T18:23:13.547707578+05:30","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-04-18T18:23:20.809869934+05:30","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-04-18T18:23:20.809940326+05:30","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-04-18T18:23:21.811147608+05:30","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading config.yaml","runtime_seconds":0.318989035,"progress":"8.3KB/8.3KB"}],"total_operations":1}}
+{"time":"2025-04-18T18:23:22.834653164+05:30","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-04-18T18:23:23.29083906+05:30","level":"INFO","msg":"stream: closing","id":"55pj8xun"}
+{"time":"2025-04-18T18:23:23.290850531+05:30","level":"INFO","msg":"handler: closed","stream_id":"55pj8xun"}
+{"time":"2025-04-18T18:23:23.290857414+05:30","level":"INFO","msg":"writer: Close: closed","stream_id":"55pj8xun"}
+{"time":"2025-04-18T18:23:23.290863025+05:30","level":"INFO","msg":"sender: closed","stream_id":"55pj8xun"}
+{"time":"2025-04-18T18:23:23.290928759+05:30","level":"INFO","msg":"stream: closed","id":"55pj8xun"}

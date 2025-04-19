@@ -41,7 +41,7 @@ def parse_args():
     parser.add_argument(
         "--dataset_path",
         type=str,
-        default="api_docs_dataset",
+        default="codocbench/dataset/",
         help="Path to the dataset directory",
     )
     parser.add_argument(
@@ -83,7 +83,7 @@ def parse_args():
     parser.add_argument(
         "--num_epochs",
         type=int,
-        default=100,
+        default=3,
         help="Number of training epochs",
     )
     parser.add_argument(
@@ -114,14 +114,20 @@ def parse_args():
     parser.add_argument(
         "--codocbench_train",
         type=str,
-        default="codocbench/dataset/train.jsonl",
+        default="processed_dataset/train.jsonl",
         help="Path to the CoDocBench training dataset file",
     )
     parser.add_argument(
         "--codocbench_test",
         type=str,
-        default="codocbench/dataset/test.jsonl",
+        default="processed_dataset/test.jsonl",
         help="Path to the CoDocBench test dataset file",
+    )
+    parser.add_argument(
+        "--codocbench_val",
+        type=str,
+        default="processed_dataset/val.jsonl",
+        help="Path to the CoDocBench validation dataset file",
     )
     # Add WandB related arguments
     parser.add_argument(
@@ -149,17 +155,19 @@ def parse_args():
     )
     return parser.parse_args()
 
-def load_codocbench_dataset(train_path, test_path):
+def load_codocbench_dataset(train_path, val_path, test_path):
     """Load the CoDocBench dataset from JSONL files."""
     
     # Load the datasets
     train_dataset = load_dataset('json', data_files=train_path, split='train')
+    val_dataset = load_dataset('json', data_files=train_path, split='train')
     test_dataset = load_dataset('json', data_files=test_path, split='train')
     
     # Combine into a single dataset dict
     dataset = {
         'train': train_dataset,
-        'validation': test_dataset
+        'validation': val_dataset,
+        'test': test_dataset
     }
     
     return dataset
@@ -337,11 +345,12 @@ def main():
         )
     
     logger.info(f"Loading CoDocBench dataset from {args.codocbench_train} and {args.codocbench_test}")
-    dataset = load_codocbench_dataset(args.codocbench_train, args.codocbench_test)
+    dataset = load_codocbench_dataset(args.codocbench_train, args.codocbench_val, args.codocbench_test)
 
-    processed_train = dataset['train'].map( preprocess_codocbench, batched=True, remove_columns=dataset['train'].column_names, )
-    processed_val = dataset['validation'].map( preprocess_codocbench, batched=True, remove_columns=dataset['validation'].column_names, )
-
+    # processed_train = dataset['train'].map( preprocess_codocbench, batched=True, remove_columns=dataset['train'].column_names, )
+    # processed_val = dataset['validation'].map( preprocess_codocbench, batched=True, remove_columns=dataset['validation'].column_names, )
+    processed_train = dataset['train']
+    processed_val = dataset['validation']
     global tokenizer
     # Load tokenizer
     logger.info(f"Loading tokenizer: {args.model_name_or_path}")
@@ -451,8 +460,8 @@ def main():
         label_pad_token_id=-100,
     )
 
-    num_tokens = sum([sum(1 for t in ex['labels'] if t != -100) for ex in tokenized_train])
-    print(f"Total non-ignored tokens in training set: {num_tokens}")
+    # num_tokens = sum([sum(1 for t in ex['labels'] if t != -100) for ex in tokenized_train])
+    # print(f"Total non-ignored tokens in training set: {num_tokens}")
 
         
     # Define training arguments - reduced batch size and gradient accumulation steps
@@ -503,9 +512,9 @@ def main():
     #     compute_metrics=compute_metrics,
     # )
     
-    for name, param in model.named_parameters():
-        if param.requires_grad:
-            print(f"{name}: {param.shape} | mean={param.data.mean():.4f}")
+    # for name, param in model.named_parameters():
+    #     if param.requires_grad:
+    #         print(f"{name}: {param.shape} | mean={param.data.mean():.4f}")
 
     # Train the model
     logger.info("Starting training...")

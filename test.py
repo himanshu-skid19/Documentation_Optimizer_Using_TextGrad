@@ -1,141 +1,168 @@
+import os
 import argparse
-import torch
 import logging
+import numpy as np
+from datasets import load_dataset
+from transformers import (
+    AutoTokenizer,
+    AutoModelForSeq2SeqLM,
+    DataCollatorForSeq2Seq,
+    Seq2SeqTrainer,
+    Seq2SeqTrainingArguments
+)
+from evaluate import load
+import torch
+import nltk
+from train import preprocess_function, preprocess_codocbench, load_codocbench_dataset  # Reuse preprocessing functions
 from peft import PeftModel, PeftConfig
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO, 
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
+# Ensure nltk tokenizer data is available
+try:
+    nltk.data.find("tokenizers/punkt")
+except (LookupError, OSError):
+    nltk.download("punkt", quiet=True)
+
 def parse_args():
-    parser = argparse.ArgumentParser(description="Test the fine-tuned documentation optimizer model")
+    parser = argparse.ArgumentParser(description="Evaluate the fine-tuned model on CoDocBench test set")
     parser.add_argument(
-        "--model_path",
+        "--model_dir",
         type=str,
-        default="./api-docs-model",
-        help="Path to the fine-tuned model directory",
+        required=True,
+        help="Directory containing the fine-tuned model and tokenizer"
     )
     parser.add_argument(
-        "--original_code_file",
+        "--test_path",
         type=str,
-        help="Path to a file containing the original code",
+        default="processed_dataset/test.jsonl",
+        help="Path to the test dataset file"
     )
     parser.add_argument(
-        "--updated_code_file",
-        type=str,
-        help="Path to a file containing the updated code",
-    )
-    parser.add_argument(
-        "--original_doc_file",
-        type=str,
-        help="Path to a file containing the original documentation",
-    )
-    parser.add_argument(
-        "--max_length",
+        "--max_source_length",
         type=int,
         default=512,
-        help="Maximum length of generated documentation",
+        help="Maximum input length"
     )
     parser.add_argument(
-        "--num_beams",
+        "--max_target_length",
         type=int,
-        default=5,
-        help="Number of beams for beam search",
+        default=512,
+        help="Maximum target length"
+    )
+    parser.add_argument(
+        "--batch_size",
+        type=int,
+        default=1,
+        help="Batch size for evaluation"
+    )
+    parser.add_argument(
+        "--codocbench_train",
+        type=str,
+        default="processed_dataset/train.jsonl",
+        help="Path to the CoDocBench training dataset file",
+    )
+    parser.add_argument(
+        "--codocbench_test",
+        type=str,
+        default="processed_dataset/test.jsonl",
+        help="Path to the CoDocBench test dataset file",
+    )
+    parser.add_argument(
+        "--codocbench_val",
+        type=str,
+        default="processed_dataset/val.jsonl",
+        help="Path to the CoDocBench validation dataset file",
     )
     return parser.parse_args()
 
-def read_file(file_path):
-    with open(file_path, 'r', encoding='utf-8') as f:
-        return f.read()
+def compute_metrics(eval_preds, tokenizer):
+    """Compute evaluation metrics."""
+    rouge_score = load("rouge")
+    bleu = load("bleu")
 
-def generate_improved_documentation(model, tokenizer, original_code, updated_code, original_doc, max_length=512, num_beams=5):
-    # Format the input according to the training format
-    instruction = f"""Improve the following Python documentation to align with the updated code:
+    preds, labels = eval_preds
+    if isinstance(preds, tuple):
+        preds = preds[0]
 
-Original code:
-```python
-{original_code}```
-Updated code:
-```python
-{updated_code}```
-Original documentation:
-```python
-{original_doc}```
-Please provide an improved version of the documentation that reflects the code changes.
-"""
-    # Tokenize input
-    inputs = tokenizer(instruction, return_tensors="pt", truncation=True, max_length=512).to("cuda" if torch.cuda.is_available() else "cpu")
+    pad_id = tokenizer.pad_token_id or 0
+    max_id = tokenizer.vocab_size - 1
 
-    # Generate improved documentation
-    with torch.no_grad():
-        outputs = model.generate(
-            input_ids=inputs["input_ids"],
-            attention_mask=inputs["attention_mask"],
-            max_length=max_length,
-            num_beams=num_beams,
-            early_stopping=True,
-        )
+    preds = np.clip(preds, 0, max_id).astype(np.int32)
+    decoded_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
 
-    # Decode the generated output
-    improved_doc = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    labels = np.where(labels != -100, labels, pad_id)
+    labels = np.clip(labels, 0, max_id).astype(np.int32)
+    decoded_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
 
-    return improved_doc
+    rouge_results = rouge_score.compute(predictions=decoded_preds, references=decoded_labels, use_stemmer=True)
+    bleu_results = bleu.compute(predictions=decoded_preds, references=decoded_labels)
 
+    return {
+        'rouge1': rouge_results['rouge1'],
+        'rouge2': rouge_results['rouge2'],
+        'rougeL': rouge_results['rougeL'],
+        'bleu': bleu_results['bleu'],
+    }
 
-def main(): 
+def main():
     args = parse_args()
-    # Load model and tokenizer
-    logger.info(f"Loading model and tokenizer from {args.model_path}")
 
-    # Load the base model first
-    config = PeftConfig.from_pretrained(args.model_path)
-    base_model = AutoModelForSeq2SeqLM.from_pretrained(
-        config.base_model_name_or_path,
-        device_map="auto" if torch.cuda.is_available() else None
+    logger.info(f"Loading model from {args.model_dir}")
+    tokenizer = AutoTokenizer.from_pretrained(args.model_dir)
+
+    # Load LoRA adapter + base model
+    config = PeftConfig.from_pretrained(args.model_dir)
+    base_model = AutoModelForSeq2SeqLM.from_pretrained(config.base_model_name_or_path)
+    model = PeftModel.from_pretrained(base_model, args.model_dir)
+
+    logger.info(f"Loading test dataset from {args.test_path}")
+    dataset = load_codocbench_dataset(args.codocbench_train, args.codocbench_val, args.codocbench_test)
+    processed_test = dataset['test']
+    logger.info("Tokenizing test data")
+    tokenized_test = processed_test.map(
+        lambda examples: preprocess_function(
+            examples, tokenizer, args.max_source_length, args.max_target_length
+        ),
+        batched=True,
+        remove_columns=processed_test.column_names,
     )
 
-    # Load the PEFT adapter
-    model = PeftModel.from_pretrained(base_model, args.model_path)
-    tokenizer = AutoTokenizer.from_pretrained(args.model_path)
-
-    # Move model to appropriate device
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    logger.info(f"Using device: {device}")
-
-    model.eval()
-
-    # Read input files if provided
-    if args.original_code_file and args.updated_code_file and args.original_doc_file:
-        logger.info("Reading input files...")
-        original_code = read_file(args.original_code_file)
-        updated_code = read_file(args.updated_code_file)
-        original_doc = read_file(args.original_doc_file)
-    else:
-        # Use example inputs if no files provided
-        print("No input files provided. Using example inputs.")
-        pass
-
-    # Generate improved documentation
-    logger.info("Generating improved documentation...")
-    improved_doc = generate_improved_documentation(
-        model,
-        tokenizer,
-        original_code,
-        updated_code,
-        original_doc,
-        args.max_length,
-        args.num_beams
+    data_collator = DataCollatorForSeq2Seq(
+        tokenizer=tokenizer,
+        model=model,
+        label_pad_token_id=-100,
     )
 
-    # Print results
-    logger.info("-" * 50)
-    logger.info("ORIGINAL DOCUMENTATION:")
-    logger.info(original_doc)
-    logger.info("-" * 50)
-    logger.info("IMPROVED DOCUMENTATION:")
-    logger.info(improved_doc)
-    logger.info("-" * 50)
+    training_args = Seq2SeqTrainingArguments(
+        output_dir="./test_output",
+        per_device_eval_batch_size=args.batch_size,
+        do_train=False,
+        do_eval=True,
+        predict_with_generate=True,
+        generation_max_length=args.max_target_length,
+        logging_dir="./logs",
+    )
+
+    trainer = Seq2SeqTrainer(
+        model=model,
+        args=training_args,
+        tokenizer=tokenizer,
+        data_collator=data_collator,
+        eval_dataset=tokenized_test,
+        compute_metrics=lambda x: compute_metrics(x, tokenizer),
+    )
+
+    logger.info("Evaluating model...")
+    metrics = trainer.evaluate()
+    logger.info("Test Evaluation Metrics:")
+    for key, value in metrics.items():
+        logger.info(f"{key}: {value:.4f}")
 
 if __name__ == "__main__":
     main()

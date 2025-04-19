@@ -1,0 +1,15 @@
+{"time":"2025-04-18T17:31:36.697587022+05:30","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/wandb/run-20250418_173136-24dfk6cy/logs/debug-core.log"}
+{"time":"2025-04-18T17:31:37.226348068+05:30","level":"INFO","msg":"created new stream","id":"24dfk6cy"}
+{"time":"2025-04-18T17:31:37.226419211+05:30","level":"INFO","msg":"stream: started","id":"24dfk6cy"}
+{"time":"2025-04-18T17:31:37.226443717+05:30","level":"INFO","msg":"writer: Do: started","stream_id":"24dfk6cy"}
+{"time":"2025-04-18T17:31:37.226495935+05:30","level":"INFO","msg":"handler: started","stream_id":"24dfk6cy"}
+{"time":"2025-04-18T17:31:37.22653629+05:30","level":"INFO","msg":"sender: started","stream_id":"24dfk6cy"}
+{"time":"2025-04-18T17:31:37.641603894+05:30","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-04-18T17:31:43.121156965+05:30","level":"INFO","msg":"stream: closing","id":"24dfk6cy"}
+{"time":"2025-04-18T17:31:43.121194506+05:30","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-04-18T17:31:43.121254989+05:30","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-04-18T17:31:44.19701138+05:30","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-04-18T17:31:44.677985617+05:30","level":"INFO","msg":"handler: closed","stream_id":"24dfk6cy"}
+{"time":"2025-04-18T17:31:44.67801404+05:30","level":"INFO","msg":"sender: closed","stream_id":"24dfk6cy"}
+{"time":"2025-04-18T17:31:44.678010213+05:30","level":"INFO","msg":"writer: Close: closed","stream_id":"24dfk6cy"}
+{"time":"2025-04-18T17:31:44.678084211+05:30","level":"INFO","msg":"stream: closed","id":"24dfk6cy"}

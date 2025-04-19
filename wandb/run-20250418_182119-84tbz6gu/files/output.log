@@ -1,0 +1,88 @@
+2025-04-18 18:21:20,929 - INFO - WandB initialized with run name: flan-t5-base-debug
+2025-04-18 18:21:20,929 - INFO - Loading dataset from processed_dataset
+2025-04-18 18:21:20,930 - INFO - Loading processed_dataset/train.jsonl
+2025-04-18 18:21:20,930 - INFO - First line of train data: {"instruction": "Improve the following Python documentation to align with the updated code:\n\nOriginal code:\n```python\ndef __init__(self, shell, available_events):\n        \n        \n        self.shell = shell\n        self.callbacks = {n:[] for n in available_events}```\n\nUpdated code:\n```python\ndef __init__(self, shell, available_events, print_on_error=True):\n        \n        \n        self.shell = shell\n        self.callbacks = {n:[] for n in available_events}\n        self.print_on_error = print_on_error\n```\n\nOriginal documentation:\n```python\nInitialise the :class:`CallbackManager`.\n\n        Parameters\n        ----------\n        shell\n            The :class:`~IPython.core.interactiveshell.InteractiveShell` instance\n        available_events\n            An iterable of names for callback events.\n```\n\nPlease provide an improved version of the documentation that reflects the code changes.", "response": "Initialise the :class:`CallbackManager`.\n\n        Parameters\n        ----------\n        shell\n            The :class:`~IPython.core.interactiveshell.InteractiveShell` instance\n        available_events\n            An iterable of names for callback events.\n        print_on_error:\n            A boolean flag to set whether the EventManager will print a warning which a event errors.", "file": "IPython_core_events.py", "function": "EventManager.__init__", "project": "ipython", "stats": {"code_additions": 2, "code_deletions": 1, "doc_additions": 2, "doc_deletions": 0, "code1_len": 147, "code2_len": 213, "doc1_len": 254, "doc2_len": 380, "doc_change_ratio": 0.1111111111111111, "code_change_ratio": 0.2727272727272727, "doc_just_formatted": false, "total_code_changes": 3, "total_doc_changes": 2}}
+
+2025-04-18 18:21:21,839 - INFO - Loaded 1990 examples from processed_dataset/train.jsonl
+2025-04-18 18:21:21,840 - INFO - Loading processed_dataset/val.jsonl
+2025-04-18 18:21:21,840 - INFO - First line of val data: {"instruction": "Improve the following Python documentation to align with the updated code:\n\nOriginal code:\n```python\ndef numpy_to_tensor(value):\n    \n    if isinstance(value, torch_np.ndarray):\n        return value.tensor\n    elif isinstance(value, (tuple, list)):\n        return type(value)(numpy_to_tensor(obj) for obj in value)\n    else:\n        return value```\n\nUpdated code:\n```python\ndef numpy_to_tensor(value):\n    \n    if isinstance(value, np.ndarray):\n        return torch.as_tensor(value)\n    if isinstance(value, tnp.ndarray):\n        return value.tensor\n    elif isinstance(value, (tuple, list)):\n        return type(value)(numpy_to_tensor(obj) for obj in value)\n    else:\n        return value\n```\n\nOriginal documentation:\n```python\nConvert torch_np.ndarray to tensor, leave other types intact. If a list/tuple, loop through it to convert.\n```\n\nPlease provide an improved version of the documentation that reflects the code changes.", "response": "Convert tnp.ndarray to tensor, leave other types intact. If a list/tuple, loop through it to convert.", "file": "torch__dynamo_utils.py", "function": "numpy_to_tensor", "project": "pytorch", "stats": {"code_additions": 3, "code_deletions": 1, "doc_additions": 1, "doc_deletions": 1, "code1_len": 244, "code2_len": 315, "doc1_len": 106, "doc2_len": 101, "doc_change_ratio": 1.0, "code_change_ratio": 0.2222222222222222, "doc_just_formatted": false, "total_code_changes": 4, "total_doc_changes": 2}}
+
+2025-04-18 18:21:22,136 - INFO - Loaded 426 examples from processed_dataset/val.jsonl
+2025-04-18 18:21:22,136 - INFO - Loading processed_dataset/test.jsonl
+2025-04-18 18:21:22,137 - INFO - First line of test data: {"instruction": "Improve the following Python documentation to align with the updated code:\n\nOriginal code:\n```python\ndef set_interpolation(self, s):\n        \n        \n        \n        if s is None: s = rcParams['image.interpolation']\n        s = s.lower()\n        if s not in self._interpd:\n            raise ValueError('Illegal interpolation string')\n        self._interpolation = s```\n\nUpdated code:\n```python\ndef set_interpolation(self, s):\n        \n        \n\n        \n        if s is None: s = rcParams['image.interpolation']\n        s = s.lower()\n        if s not in self._interpd:\n            raise ValueError('Illegal interpolation string')\n        self._interpolation = s\n```\n\nOriginal documentation:\n```python\nSet the interpolation method the image uses when resizing.\n\n        ACCEPTS: ['bicubic' | 'bilinear' | 'blackman100' | 'blackman256' |\n        'blackman64', 'nearest' | 'sinc144' | 'sinc256' | 'sinc64' |\n        'spline16' | 'spline36']\n```\n\nPlease provide an improved version of the documentation that reflects the code changes.", "response": "Set the interpolation method the image uses when resizing.\n\n        ACCEPTS: ['nearest' | 'bilinear' | 'bicubic' | 'spline16' |\n          'spline36' | 'hanning' | 'hamming' | 'hermite' | 'kaiser' |\n          'quadric' | 'catrom' | 'gaussian' | 'bessel' | 'mitchell' |\n          'sinc' | 'lanczos' | ]", "file": "lib_matplotlib_image.py", "function": "AxesImage.set_interpolation", "project": "matplotlib", "stats": {"code_additions": 1, "code_deletions": 0, "doc_additions": 4, "doc_deletions": 3, "code1_len": 266, "code2_len": 267, "doc1_len": 236, "doc2_len": 300, "doc_change_ratio": 0.6363636363636364, "code_change_ratio": 0.05263157894736842, "doc_just_formatted": false, "total_code_changes": 1, "total_doc_changes": 7}}
+
+2025-04-18 18:21:22,429 - INFO - Loaded 427 examples from processed_dataset/test.jsonl
+2025-04-18 18:21:22,430 - INFO - Loading tokenizer: google/flan-t5-base
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+2025-04-18 18:21:22,823 - INFO - Not using quantization
+2025-04-18 18:21:22,823 - INFO - Loading model: google/flan-t5-base
+2025-04-18 18:21:25,061 - INFO - Model type: T5ForConditionalGeneration
+2025-04-18 18:21:25,062 - INFO - Model parameters: 247577856
+2025-04-18 18:21:25,062 - INFO - Setting up LoRA for fine-tuning
+2025-04-18 18:21:25,062 - INFO - Detected Flan-T5 model, using q,v target modules
+2025-04-18 18:21:25,408 - INFO - Trainable parameters: 1769472 (0.71% of total)
+trainable params: 1,769,472 || all params: 249,347,328 || trainable%: 0.7096414524241463
+2025-04-18 18:21:25,411 - INFO - Tokenizing datasets
+2025-04-18 18:21:25,411 - INFO - Tokenizing train dataset with 1990 examples
+Map:   0%|                                                                                 | 0/1990 [00:00<?, ? examples/s]2025-04-18 18:21:25,422 - INFO - Sample input length: 877
+2025-04-18 18:21:25,423 - INFO - Sample target length: 380
+2025-04-18 18:21:25,589 - INFO - Batch tokenized with 65866 non-padding tokens in labels
+Map:  50%|██████████████████████████████████▏                                 | 1000/1990 [00:00<00:00, 4064.73 examples/s]2025-04-18 18:21:25,667 - INFO - Sample input length: 1344
+2025-04-18 18:21:25,668 - INFO - Sample target length: 302
+2025-04-18 18:21:25,835 - INFO - Batch tokenized with 65512 non-padding tokens in labels
+Map: 100%|████████████████████████████████████████████████████████████████████| 1990/1990 [00:00<00:00, 3928.43 examples/s]
+2025-04-18 18:21:25,926 - INFO - Tokenized train dataset has 1990 examples
+2025-04-18 18:21:25,926 - INFO - Tokenizing test dataset with 427 examples
+Map:   0%|                                                                                  | 0/427 [00:00<?, ? examples/s]2025-04-18 18:21:25,939 - INFO - Sample input length: 1032
+2025-04-18 18:21:25,939 - INFO - Sample target length: 300
+2025-04-18 18:21:26,017 - INFO - Batch tokenized with 28843 non-padding tokens in labels
+Map: 100%|██████████████████████████████████████████████████████████████████████| 427/427 [00:00<00:00, 3556.69 examples/s]
+2025-04-18 18:21:26,058 - INFO - Tokenized test dataset has 427 examples
+2025-04-18 18:21:26,058 - INFO - Tokenizing validation dataset with 426 examples
+Map:   0%|                                                                                  | 0/426 [00:00<?, ? examples/s]2025-04-18 18:21:26,069 - INFO - Sample input length: 928
+2025-04-18 18:21:26,069 - INFO - Sample target length: 101
+2025-04-18 18:21:26,143 - INFO - Batch tokenized with 28180 non-padding tokens in labels
+Map: 100%|██████████████████████████████████████████████████████████████████████| 426/426 [00:00<00:00, 3790.22 examples/s]
+2025-04-18 18:21:26,180 - INFO - Tokenized validation dataset has 426 examples
+2025-04-18 18:21:26,493 - INFO - Total non-ignored tokens in training set: 131378
+2025-04-18 18:21:26,493 - INFO - Average non-ignored tokens per example: 66.02
+2025-04-18 18:21:27,690 - INFO - Starting training...
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/optimization.py:411: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+  0%|                                                                                             | 0/4960 [00:00<?, ?it/s]You're using a T5TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+2025-04-18 18:21:27,837 - INFO - Number of non-padded label tokens: 186
+2025-04-18 18:21:27,837 - INFO - Labels device: cpu, Model device: cuda:0
+2025-04-18 18:21:27,842 - ERROR - Training failed with error: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument index in method wrapper_CUDA__index_select)
+2025-04-18 18:21:27,843 - ERROR - Traceback (most recent call last):
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 562, in main
+    train_result = trainer.train()
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 1645, in train
+    return inner_training_loop(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 1929, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs)
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 209, in training_step
+    loss = self.compute_loss(model, inputs)
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 184, in compute_loss
+    outputs = model(**inputs)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/peft/peft_model.py", line 1080, in forward
+    return self.base_model(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/models/t5/modeling_t5.py", line 1683, in forward
+    encoder_outputs = self.encoder(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/models/t5/modeling_t5.py", line 988, in forward
+    inputs_embeds = self.embed_tokens(input_ids)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/torch/nn/modules/sparse.py", line 162, in forward
+    return F.embedding(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/torch/nn/functional.py", line 2210, in embedding
+    return torch.embedding(weight, input, padding_idx, scale_grad_by_freq, sparse)
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu! (when checking argument for argument index in method wrapper_CUDA__index_select)
+
+2025-04-18 18:21:27,844 - INFO - Saving model to ./api-docs-model-fixed

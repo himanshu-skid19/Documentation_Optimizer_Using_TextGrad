@@ -1,0 +1,23 @@
+2025-04-18 18:15:40,263 INFO    MainThread:50115 [wandb_setup.py:_flush():67] Current SDK version is 0.19.9
+2025-04-18 18:15:40,264 INFO    MainThread:50115 [wandb_setup.py:_flush():67] Configure stats pid to 50115
+2025-04-18 18:15:40,264 INFO    MainThread:50115 [wandb_setup.py:_flush():67] Loading settings from /home/himanshu-skid19/.config/wandb/settings
+2025-04-18 18:15:40,264 INFO    MainThread:50115 [wandb_setup.py:_flush():67] Loading settings from /home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/wandb/settings
+2025-04-18 18:15:40,264 INFO    MainThread:50115 [wandb_setup.py:_flush():67] Loading settings from environment variables
+2025-04-18 18:15:40,264 INFO    MainThread:50115 [wandb_init.py:setup_run_log_directory():662] Logging user logs to /home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/wandb/run-20250418_181540-e6o6lfdi/logs/debug.log
+2025-04-18 18:15:40,264 INFO    MainThread:50115 [wandb_init.py:setup_run_log_directory():663] Logging internal logs to /home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/wandb/run-20250418_181540-e6o6lfdi/logs/debug-internal.log
+2025-04-18 18:15:40,264 INFO    MainThread:50115 [wandb_init.py:init():781] calling init triggers
+2025-04-18 18:15:40,264 INFO    MainThread:50115 [wandb_init.py:init():786] wandb.init called with sweep_config: {}
+config: {'dataset_dir': 'codocbench/dataset/processed', 'model_name_or_path': 'google/flan-t5-base', 'output_dir': './api-docs-model', 'max_source_length': 256, 'max_target_length': 128, 'learning_rate': 5e-05, 'batch_size': 4, 'num_epochs': 20, 'lora_r': 8, 'lora_alpha': 16, 'lora_dropout': 0.05, 'quantization': 'none', 'skip_first_epochs': 2, 'gradient_accumulation_steps': 4, 'eval_delay': 2, 'use_wandb': True, 'seed': 42, '_wandb': {}}
+2025-04-18 18:15:40,264 INFO    MainThread:50115 [wandb_init.py:init():809] starting backend
+2025-04-18 18:15:40,264 INFO    MainThread:50115 [wandb_init.py:init():813] sending inform_init request
+2025-04-18 18:15:40,267 INFO    MainThread:50115 [backend.py:_multiprocessing_setup():101] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2025-04-18 18:15:40,268 INFO    MainThread:50115 [wandb_init.py:init():823] backend started and connected
+2025-04-18 18:15:40,269 INFO    MainThread:50115 [wandb_init.py:init():915] updated telemetry
+2025-04-18 18:15:40,273 INFO    MainThread:50115 [wandb_init.py:init():939] communicating run to backend with 90.0 second timeout
+2025-04-18 18:15:41,228 INFO    MainThread:50115 [wandb_init.py:init():1014] starting run threads in backend
+2025-04-18 18:15:41,321 INFO    MainThread:50115 [wandb_run.py:_console_start():2454] atexit reg
+2025-04-18 18:15:41,321 INFO    MainThread:50115 [wandb_run.py:_redirect():2306] redirect: wrap_raw
+2025-04-18 18:15:41,321 INFO    MainThread:50115 [wandb_run.py:_redirect():2371] Wrapping output streams.
+2025-04-18 18:15:41,321 INFO    MainThread:50115 [wandb_run.py:_redirect():2394] Redirects installed.
+2025-04-18 18:15:41,322 INFO    MainThread:50115 [wandb_init.py:init():1056] run started, returning control to user process
+2025-04-18 18:15:46,739 INFO    MsgRouterThr:50115 [mailbox.py:close():129] [no run ID] Closing mailbox, abandoning 1 handles.

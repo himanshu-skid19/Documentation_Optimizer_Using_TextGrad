@@ -5,11 +5,11 @@ from typing import Dict, List, Any, Optional, Tuple
 
 # TextGrad imports
 import textgrad as tg
-from textgrad.engine.openai_api import ChatOpenAI
+from textgrad.engine_experimental.openai import OpenAIEngine
 
-# LlamaIndex imports
-from llama_index.llms import LlamaCPP
-from llama_index import ServiceContext, VectorStoreIndex, Document
+from dotenv import load_dotenv
+from textgrad.engine import get_engine
+load_dotenv()
 
 class APIDocOptimizer:
     """API Documentation Optimizer using TextGrad framework.
@@ -115,10 +115,7 @@ class APIDocOptimizer:
             os.environ["OPENAI_API_KEY"] = self.openai_api_key
             
             # Initialize the OpenAI engine
-            self.engine = ChatOpenAI(
-                model="gpt-3.5-turbo",
-                temperature=self.temperature
-            )
+            self.engine = get_engine("experimental:gpt-4o-mini", cache=False)
         
         else:
             raise ValueError(f"Unsupported model name: {self.model_name}")
@@ -233,16 +230,16 @@ class APIDocOptimizer:
         )
         
         # Get the evaluation response
-        response = self.engine.generate(eval_var)
+        response = self.engine.generate(content="Please evaluate the documentation according to the criteria provided.",system_prompt=eval_prompt)
         
         # Extract JSON from the response
         try:
             # Find JSON-like content in the response
-            json_start = response.value.find('{')
-            json_end = response.value.rfind('}') + 1
+            json_start = response.find('{')
+            json_end = response.rfind('}') + 1
             
             if json_start >= 0 and json_end > json_start:
-                json_str = response.value[json_start:json_end]
+                json_str = response[json_start:json_end]
                 scores = json.loads(json_str)
             else:
                 # Fallback if JSON parsing fails

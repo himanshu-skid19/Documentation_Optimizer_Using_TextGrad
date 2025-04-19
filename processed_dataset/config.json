@@ -1,0 +1,13 @@
+{
+  "input": "codocbench/dataset/codocbench.jsonl",
+  "output_dir": "processed_dataset",
+  "train_size": 0.7,
+  "val_size": 0.15,
+  "test_size": 0.15,
+  "seed": 42,
+  "min_code_change": 1,
+  "min_doc_change": 1,
+  "max_length": 1024,
+  "balance_projects": false,
+  "project_aware_split": false
+}

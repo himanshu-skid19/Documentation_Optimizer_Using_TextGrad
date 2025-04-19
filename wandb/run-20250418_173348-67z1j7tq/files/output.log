@@ -1,0 +1,85 @@
+2025-04-18 17:33:49,796 - INFO - WandB initialized with run name: flan-t5-base-none
+2025-04-18 17:33:49,796 - INFO - Loading dataset from processed_dataset
+2025-04-18 17:33:50,761 - INFO - Loaded 1990 examples from processed_dataset/train.jsonl
+2025-04-18 17:33:51,077 - INFO - Loaded 426 examples from processed_dataset/val.jsonl
+2025-04-18 17:33:51,394 - INFO - Loaded 427 examples from processed_dataset/test.jsonl
+2025-04-18 17:33:51,394 - INFO - Loading tokenizer: google/flan-t5-base
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+2025-04-18 17:33:51,838 - INFO - Not using quantization
+2025-04-18 17:33:51,838 - INFO - Loading model: google/flan-t5-base
+2025-04-18 17:33:54,172 - INFO - Setting up LoRA for efficient fine-tuning
+trainable params: 884,736 || all params: 248,462,592 || trainable%: 0.3560841867092814
+2025-04-18 17:33:54,483 - INFO - Tokenizing datasets
+Map: 100%|████████████████████████████████████████████████████████████████████| 1990/1990 [00:00<00:00, 2959.49 examples/s]
+Map: 100%|██████████████████████████████████████████████████████████████████████| 427/427 [00:00<00:00, 2984.77 examples/s]
+Map: 100%|██████████████████████████████████████████████████████████████████████| 426/426 [00:00<00:00, 3076.18 examples/s]
+2025-04-18 17:33:55,984 - INFO - Total non-ignored tokens in training set: 152911
+2025-04-18 17:33:56,799 - INFO - Starting training...
+/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/optimization.py:411: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+  0%|                                                                                             | 0/4960 [00:00<?, ?it/s]You're using a T5TokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+  5%|████                                                                             | 248/4960 [03:08<1:02:10,  1.26it/s]Traceback (most recent call last):
+{'loss': 0.0, 'learning_rate': 0.0, 'epoch': 0.2}
+{'loss': 0.0, 'learning_rate': 0.0, 'epoch': 0.4}
+{'loss': 0.0, 'learning_rate': 0.0, 'epoch': 0.6}
+{'loss': 0.0, 'learning_rate': 0.0, 'epoch': 0.8}
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 448, in <module>
+    main()
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 417, in main
+    train_result = trainer.train()
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 1645, in train
+    return inner_training_loop(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 2026, in _inner_training_loop
+    self._maybe_log_save_evaluate(tr_loss, model, trial, epoch, ignore_keys_for_eval)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 2312, in _maybe_log_save_evaluate
+    metrics = self.evaluate(ignore_keys=ignore_keys_for_eval)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer_seq2seq.py", line 159, in evaluate
+    return super().evaluate(eval_dataset, ignore_keys=ignore_keys, metric_key_prefix=metric_key_prefix)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 3043, in evaluate
+    output = eval_loop(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 3343, in evaluation_loop
+    metrics = self.compute_metrics(EvalPrediction(predictions=all_preds, label_ids=all_labels))
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 395, in <lambda>
+    compute_metrics_with_tokenizer = lambda eval_preds: compute_metrics(eval_preds, tokenizer)
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 218, in compute_metrics
+    decoded_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/tokenization_utils_base.py", line 3469, in batch_decode
+    return [
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/tokenization_utils_base.py", line 3470, in <listcomp>
+    self.decode(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/tokenization_utils_base.py", line 3509, in decode
+    return self._decode(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/tokenization_utils_fast.py", line 546, in _decode
+    text = self._tokenizer.decode(token_ids, skip_special_tokens=skip_special_tokens)
+OverflowError: out of range integral type conversion attempted
+Traceback (most recent call last):
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 448, in <module>
+    main()
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 417, in main
+    train_result = trainer.train()
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 1645, in train
+    return inner_training_loop(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 2026, in _inner_training_loop
+    self._maybe_log_save_evaluate(tr_loss, model, trial, epoch, ignore_keys_for_eval)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 2312, in _maybe_log_save_evaluate
+    metrics = self.evaluate(ignore_keys=ignore_keys_for_eval)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer_seq2seq.py", line 159, in evaluate
+    return super().evaluate(eval_dataset, ignore_keys=ignore_keys, metric_key_prefix=metric_key_prefix)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 3043, in evaluate
+    output = eval_loop(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/trainer.py", line 3343, in evaluation_loop
+    metrics = self.compute_metrics(EvalPrediction(predictions=all_preds, label_ids=all_labels))
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 395, in <lambda>
+    compute_metrics_with_tokenizer = lambda eval_preds: compute_metrics(eval_preds, tokenizer)
+  File "/home/himanshu-skid19/Desktop/Advanced ML lab/Documentation_Optimizer_Using_TextGrad/train.py", line 218, in compute_metrics
+    decoded_preds = tokenizer.batch_decode(preds, skip_special_tokens=True)
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/tokenization_utils_base.py", line 3469, in batch_decode
+    return [
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/tokenization_utils_base.py", line 3470, in <listcomp>
+    self.decode(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/tokenization_utils_base.py", line 3509, in decode
+    return self._decode(
+  File "/home/himanshu-skid19/miniconda3/envs/ml-proj/lib/python3.10/site-packages/transformers/tokenization_utils_fast.py", line 546, in _decode
+    text = self._tokenizer.decode(token_ids, skip_special_tokens=skip_special_tokens)
+OverflowError: out of range integral type conversion attempted
