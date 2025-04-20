@@ -3,6 +3,10 @@
 
 This is done as a course project for the course DA312: Advanced Machine Learning Laboratory.
 
+Link to trained model (```flan-t5-base```): https://drive.google.com/drive/folders/1QrBnTF4KqCLdRDm_RKEPLu4PISMGB_qB?usp=sharing
+
+Link to dataset: https://github.com/kunpai/codocbench
+
 ## Overview
 This project implements a documentation optimization system that iteratively enhances API documentation by evaluating it across multiple quality metrics and suggesting improvements. It leverages TextGrad, a framework that enables gradient-based optimization of text using LLMs.
 
