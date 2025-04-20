@@ -41,6 +41,60 @@ conda activate <env_name>
 pip install -r requirements.txt
 ```
 
+#### Environment variables
+You need to setup environment variables for this code to work.
+1. Create a ```.env``` file
+2. Add your key in this as follows:
+```bash
+OPENAI_API_KEY=<INSERT OPENAI KEY HERE>
+```
+
+## Training and testing
+This project finetunes the ```google/flan-t5-base``` model for this task using **Parameter Efficient Finetuning** (PEFT) methods. Several designs decisions were made to make training more memory efficient.
+
+The model was trained on the ```CoDocBench``` Dataset, a dataset for code-documentation alignment in software maintenance. The dataset is composed of 4,573 code-documentation pairs extracted from 200 open-source Python projects
+
+You can replicate training as follows:
+```bash
+python train.py \
+  --dataset_path codocbench/dataset/ \
+  --model_name_or_path google/flan-t5-base \
+  --output_dir ./api-docs-model \
+  --max_source_length 512 \
+  --max_target_length 512 \
+  --learning_rate 1e-3 \
+  --batch_size 1 \
+  --num_epochs 3 \
+  --lora_r 32 \
+  --lora_alpha 32 \
+  --lora_dropout 0.1 \
+  --quantization 4bit \
+  --codocbench_train processed_dataset/train.jsonl \
+  --codocbench_val processed_dataset/val.jsonl \
+  --codocbench_test processed_dataset/test.jsonl \
+  --use_wandb \
+  --wandb_project doc-optimizer \
+  --wandb_entity your-wandb-username \
+  --wandb_run_name "flan-t5-lora-docgen"
+```
+
+You can tune the parameters as per your specifications
+
+
+The testing script can be run by:
+```bash
+python test.py \
+  --model_dir ./api-docs-model \
+  --test_path processed_dataset/test.jsonl \
+  --max_source_length 512 \
+  --max_target_length 512 \
+  --batch_size 1 \
+  --codocbench_train processed_dataset/train.jsonl \
+  --codocbench_val processed_dataset/val.jsonl \
+  --codocbench_test processed_dataset/test.jsonl
+
+```
+
 ## Usage
 #### Command Line Interface
 ```bash
@@ -92,5 +146,3 @@ improved_doc = optimizer.optimize(documentation)
 print(improved_doc)
 ```
 
-Credits
-Built with TextGrad framework.
