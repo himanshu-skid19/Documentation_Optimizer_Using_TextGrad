@@ -72,7 +72,7 @@ python train.py \
   --lora_r 32 \
   --lora_alpha 32 \
   --lora_dropout 0.1 \
-  --quantization 4bit \
+  --quantization none \
   --codocbench_train processed_dataset/train.jsonl \
   --codocbench_val processed_dataset/val.jsonl \
   --codocbench_test processed_dataset/test.jsonl \
